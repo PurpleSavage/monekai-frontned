@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthLayoutComponent } from './shared/auth/ui/layouts/auth-layout.component';
+import { AuthPageComponent } from './core/shared/auth/ui/page/auth-page.component';
 import { LandingLayoutComponent } from './landing/layout/landing-layout.component';
 
 export const routes: Routes = [
@@ -9,7 +9,7 @@ export const routes: Routes = [
     },
     {
         path: 'auth',
-        component: AuthLayoutComponent,
+        component: AuthPageComponent,
         
     }
 ];
