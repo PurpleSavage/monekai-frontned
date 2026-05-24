@@ -8,7 +8,7 @@ export const routes: Routes = [
         component:LandingLayoutComponent
     },
     {
-        path: 'auth',
+        path: 'auth/login',
         component: AuthPageComponent,
         
     }

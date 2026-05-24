@@ -1,4 +1,4 @@
 export const environment = {
-    clerApiKey:"pk_test_Y3JlYXRpdmUtY29yYWwtNzQuY2xlcmsuYWNjb3VudHMuZGV2JA",
-    backendUrl:"http://localhost:8080"
+  backendUrl: "http://localhost:8080",
+  googleClientId:"1006288491513-06mqu4qepaju2g0g9ohas4p0l37ivd16.apps.googleusercontent.com"
 };
