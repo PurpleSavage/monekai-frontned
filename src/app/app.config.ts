@@ -1,8 +1,11 @@
-import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { apiBaseUrlInterceptor } from './framework-utilities/interceptors/api-base-url.interceptor';
+import { apiBaseUrlInterceptor } from './core/framewrok-utilities/interceptors/api-base-url.interceptor';
+import { AuthHttp } from './core/shared/auth/infrastructure/http/auth-http.service';
+import { AuthPort } from './core/shared/auth/application/ports/auth.port';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,5 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([apiBaseUrlInterceptor])
     ),
+    { provide: AuthPort, useClass: AuthHttp}
   ]
 };

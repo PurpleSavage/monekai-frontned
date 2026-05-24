@@ -8,9 +8,11 @@ import { toSessionEntity } from "../infra-mappers/to-session-entity.mapper";
 import { AppBaseError } from "../../../common/infrastructure/http-errors/app-base.error";
 import { SessionEntity } from "../../domain/entities/session.entity";
 
+
 @Injectable()
 export class AuthHttp implements AuthPort{
-  private http= inject(HttpClient)
+  private http = inject(HttpClient)
+  
   loginWithGoogle(dto:GoogleAuthDto):Observable<SessionEntity> {
     return this.http.post<SessionDto>("/login", dto).pipe(
       map((data) => { 
@@ -22,9 +24,29 @@ export class AuthHttp implements AuthPort{
           appError = AppBaseError.fromBackend(err.error);
         } else {
           appError = AppBaseError.fromBackend({
-            Title: 'Error de Red',
-            Message: 'No se pudo establecer comunicación con el servidor.',
-            Status: 0
+            title: 'network error',
+            message: 'Communication with the server could not be established.',
+            status: 0
+          })
+        }
+        throw appError
+      })
+    )
+  }
+  getProfile(): Observable<SessionEntity> {
+    return this.http.get<SessionDto>('/profile').pipe(
+      map((data) => {
+        return toSessionEntity(data)
+      }),
+      catchError((err: unknown) => { 
+        let appError: AppBaseError;
+        if (err instanceof HttpErrorResponse) {
+          appError = AppBaseError.fromBackend(err.error);
+        } else {
+          appError = AppBaseError.fromBackend({
+            title: 'network error',
+            message: 'Communication with the server could not be established.',
+            status: 0
           })
         }
         throw appError

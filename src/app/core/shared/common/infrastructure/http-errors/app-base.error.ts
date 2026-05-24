@@ -1,34 +1,34 @@
 export interface BackendErrorPayload {
-  Title: string;
-  Message: string;
-  Status: number;
-  Details?: Record<string, string>;
+  title: string;     // 👈 Cambiado a minúscula
+  message: string;   // 👈 Cambiado a minúscula
+  status: number;    // 👈 Cambiado a minúscula
+  details?: Record<string, string>;
 }
+
 export class AppBaseError extends Error {
   public readonly title: string;
   public readonly status: number;
   public readonly details?: Record<string, string>;
 
   constructor(payload: BackendErrorPayload) {
-    // Pasamos el Message al constructor base de 'Error'
-    super(payload.Message); 
+    // Pasamos el message (en minúscula) al constructor base
+    super(payload.message); 
     
     this.name = 'AppBaseError';
-    this.title = payload.Title;
-    this.status = payload.Status;
-    this.details = payload.Details;
+    this.title = payload.title;
+    this.status = payload.status;
+    this.details = payload.details;
   }
 
   /**
-   * Método estático para instanciar el error fácilmente 
-   * a partir de la respuesta cruda del backend (JSON)
+   * Método estático mapeado con las propiedades en minúscula
    */
   static fromBackend(data: Partial<BackendErrorPayload>): AppBaseError {
     return new AppBaseError({
-      Title: data.Title ?? 'Error Inesperado',
-      Message: data.Message ?? 'Ha ocurrido un error en el servidor.',
-      Status: data.Status ?? 500,
-      Details: data.Details
+      title: data.title ?? 'Error Inesperado',
+      message: data.message ?? 'Ha ocurrido un error en el servidor.',
+      status: data.status ?? 500,
+      details: data.details
     });
   }
 }

@@ -1,18 +1,27 @@
-import { Component,  OnInit, signal } from "@angular/core";
+import { Component,  inject,  OnInit, signal } from "@angular/core";
 import { environment } from "../../../../../../environments/environment.development";
 import type { CredentialResponse } from 'google-one-tap';
+import { LoginWithGoogleUseCase } from "../../application/use-cases/login-with-google.use-case";
+import { Router } from "@angular/router";
+import { AuthStateManager } from "../../state-manager/auth-state.service";
+import { AppBaseError } from "../../../common/infrastructure/http-errors/app-base.error";
 
 declare const google: any;
 @Component({
   templateUrl:'./auth-page.component.html',
   selector: 'app-auth-layout',
   standalone: true,
-  imports: [
-    
-  ],  
+  providers: [
+    LoginWithGoogleUseCase,
+    AuthStateManager
+  ]
 })
 export class AuthPageComponent implements OnInit {
-  public isGoogleSdkLoaded = signal(false);
+  private loginUseCase = inject(LoginWithGoogleUseCase);
+  private router = inject(Router)
+  private authStatemanager = inject(AuthStateManager)
+  public isGoogleSdkLoaded = signal(false)
+  public errorAuth = signal<string>('')
 
   ngOnInit(): void {
     this.loadGoogleScript();
@@ -70,6 +79,17 @@ export class AuthPageComponent implements OnInit {
   }
 
   private handleGoogleCredential(idToken: string): void {
-    console.log('TokenID capturado:', idToken);
+    this.loginUseCase.execute({token:idToken}).subscribe({
+      next: (data) => {
+        this.authStatemanager.setSession(data)
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Error al iniciar sesión con Google:', err);
+        if (err instanceof AppBaseError) {
+          this.errorAuth.set(err.message)
+        }
+      }
+    });
   }
 }

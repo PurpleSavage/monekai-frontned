@@ -1,19 +1,20 @@
 import { Injectable } from "@angular/core";
-import { inject } from "@angular/core/primitives/di";
 import { AuthPort } from "../ports/auth.port";
+import { inject } from "@angular/core/primitives/di";
 import { Observable, tap } from "rxjs";
-import { SessionEntity } from "../../domain/entities/session.entity";
-import { GoogleAuthDto } from "../dtos/requests/google-auth.dto";
 import { ContextStorageStrategy, StorageStrategies } from "../../../common/infrastructure/adapters/context-strategy-storage.service";
+import { SessionEntity } from "../../domain/entities/session.entity";
 
-@Injectable()
-export class LoginWithGoogleUseCase { 
+@Injectable({
+  providedIn: 'root'
+})
+export class GetProfileUseCase {
   private authService = inject(AuthPort)
   private storageService = inject(ContextStorageStrategy)
   
-  execute(dto:GoogleAuthDto):Observable<SessionEntity> { 
-    return this.authService.loginWithGoogle(dto).pipe(
-      tap((data) => {
+  execute(): Observable<SessionEntity> { 
+    return this.authService.getProfile().pipe(
+      tap((data) => { 
         const dataStorage = {
           id: data.userData.id,
           email: data.userData.email,
@@ -26,6 +27,5 @@ export class LoginWithGoogleUseCase {
           .set('userData', dataStorage)
       })
     )
-  
   }
 }
