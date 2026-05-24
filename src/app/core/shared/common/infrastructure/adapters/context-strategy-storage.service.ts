@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core"
 import { inject } from "@angular/core/primitives/di"
-import { LoacalStorageStrategy } from "./local-storage-strategy.service"
+import { LocalStorageStrategy } from "./local-storage-strategy.service"
 import { SessionStorageStrategy } from "./session-storage-strategy.service"
 import { StrategyStoragePort } from "../../application/ports/strategy-storage.port"
 
@@ -15,7 +15,7 @@ export type StorageStrategiesType= typeof StorageStrategies[keyof typeof Storage
     providedIn:'root'
 })
 export class ContextStorageStrategy{
-    private local = inject(LoacalStorageStrategy)
+    private local = inject(LocalStorageStrategy)
     private session = inject(SessionStorageStrategy)
     private activeStrategy: StrategyStoragePort = this.local
     use(type:StorageStrategiesType): this {

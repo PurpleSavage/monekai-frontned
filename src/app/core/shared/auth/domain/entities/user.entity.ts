@@ -3,5 +3,6 @@ export interface UserEntity {
   email: string,
   photoUrl: string,
   createdAt: string,
-  credits:number
+  credits: number,
+  hasAvatar:boolean,
 }

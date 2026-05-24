@@ -4,7 +4,7 @@ import { StrategyStoragePort } from "../../application/ports/strategy-storage.po
 @Injectable({
     providedIn:'root'
 })
-export class LoacalStorageStrategy implements StrategyStoragePort{
+export class LocalStorageStrategy implements StrategyStoragePort{
     get<T>(key: string): T | null {
         try {
         const item = localStorage.getItem(key);

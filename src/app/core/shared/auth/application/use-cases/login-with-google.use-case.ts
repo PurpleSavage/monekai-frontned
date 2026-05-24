@@ -8,8 +8,10 @@ import { ContextStorageStrategy, StorageStrategies } from "../../../common/infra
 
 @Injectable()
 export class LoginWithGoogleUseCase { 
-  private authService = inject(AuthPort)
-  private storageService = inject(ContextStorageStrategy)
+  constructor(
+    private authService: AuthPort,
+    private storageService: ContextStorageStrategy
+  ) {}
   
   execute(dto:GoogleAuthDto):Observable<SessionEntity> { 
     return this.authService.loginWithGoogle(dto).pipe(
@@ -20,10 +22,11 @@ export class LoginWithGoogleUseCase {
           photoUrl: data.userData.photoUrl,
           createdAt: data.userData.createdAt,
           credits: data.userData.credits,
+          hasAvatar: data.userData.hasAvatar,
         }
         this.storageService
           .use(StorageStrategies.LOCAL)
-          .set('userData', dataStorage)
+          .set('user-data', dataStorage)
       })
     )
   

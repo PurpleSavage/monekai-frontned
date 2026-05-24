@@ -4,6 +4,7 @@ import { inject } from "@angular/core/primitives/di";
 import { Observable, tap } from "rxjs";
 import { ContextStorageStrategy, StorageStrategies } from "../../../common/infrastructure/adapters/context-strategy-storage.service";
 import { SessionEntity } from "../../domain/entities/session.entity";
+import { AuthStateManager } from "../../state-manager/auth-state.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { SessionEntity } from "../../domain/entities/session.entity";
 export class GetProfileUseCase {
   private authService = inject(AuthPort)
   private storageService = inject(ContextStorageStrategy)
-  
+  private authStateManager = inject(AuthStateManager);
   execute(): Observable<SessionEntity> { 
     return this.authService.getProfile().pipe(
       tap((data) => { 
@@ -21,10 +22,12 @@ export class GetProfileUseCase {
           photoUrl: data.userData.photoUrl,
           createdAt: data.userData.createdAt,
           credits: data.userData.credits,
+          hasAvatar: data.userData.hasAvatar,
         }
+        this.authStateManager.setSession(data);
         this.storageService
           .use(StorageStrategies.LOCAL)
-          .set('userData', dataStorage)
+          .set('user-data', dataStorage)
       })
     )
   }

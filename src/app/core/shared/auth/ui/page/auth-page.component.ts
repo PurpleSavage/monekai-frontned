@@ -5,6 +5,8 @@ import { LoginWithGoogleUseCase } from "../../application/use-cases/login-with-g
 import { Router } from "@angular/router";
 import { AuthStateManager } from "../../state-manager/auth-state.service";
 import { AppBaseError } from "../../../common/infrastructure/http-errors/app-base.error";
+import { AuthPort } from "../../application/ports/auth.port";
+import { AuthHttp } from "../../infrastructure/http/auth-http.service";
 
 declare const google: any;
 @Component({
@@ -12,8 +14,7 @@ declare const google: any;
   selector: 'app-auth-layout',
   standalone: true,
   providers: [
-    LoginWithGoogleUseCase,
-    AuthStateManager
+    AuthStateManager,
   ]
 })
 export class AuthPageComponent implements OnInit {
