@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { AuthPort } from "../ports/auth.port";
-import { inject } from "@angular/core/primitives/di";
 import { Observable, tap } from "rxjs";
 import { ContextStorageStrategy, StorageStrategies } from "../../../common/infrastructure/adapters/context-strategy-storage.service";
 import { SessionEntity } from "../../domain/entities/session.entity";
@@ -10,9 +9,11 @@ import { AuthStateManager } from "../../state-manager/auth-state.service";
   providedIn: 'root'
 })
 export class GetProfileUseCase {
-  private authService = inject(AuthPort)
-  private storageService = inject(ContextStorageStrategy)
-  private authStateManager = inject(AuthStateManager);
+  constructor(
+    private authService: AuthPort,
+    private storageService: ContextStorageStrategy,
+    private authStateManager: AuthStateManager,
+  ) { }
   execute(): Observable<SessionEntity> { 
     return this.authService.getProfile().pipe(
       tap((data) => { 

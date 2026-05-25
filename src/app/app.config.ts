@@ -6,6 +6,8 @@ import { apiBaseUrlInterceptor } from './core/framewrok-utilities/interceptors/a
 import { AuthHttp } from './core/shared/auth/infrastructure/http/auth-http.service';
 import { AuthPort } from './core/shared/auth/application/ports/auth.port';
 import { LoginWithGoogleUseCase } from './core/shared/auth/application/use-cases/login-with-google.use-case';
+import { AuthStateManager } from './core/shared/auth/state-manager/auth-state.service';
+import { GetSessionFromStorageUseCase } from './core/shared/common/application/use-cases/get-session-from-storage.use-case';
 
 
 export const appConfig: ApplicationConfig = {
@@ -16,6 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([apiBaseUrlInterceptor])
     ),
+    AuthStateManager,
+    GetSessionFromStorageUseCase,
     LoginWithGoogleUseCase,
     { provide: AuthPort, useClass: AuthHttp}
   ]

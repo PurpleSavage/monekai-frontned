@@ -5,17 +5,13 @@ import { LoginWithGoogleUseCase } from "../../application/use-cases/login-with-g
 import { Router } from "@angular/router";
 import { AuthStateManager } from "../../state-manager/auth-state.service";
 import { AppBaseError } from "../../../common/infrastructure/http-errors/app-base.error";
-import { AuthPort } from "../../application/ports/auth.port";
-import { AuthHttp } from "../../infrastructure/http/auth-http.service";
+
 
 declare const google: any;
 @Component({
   templateUrl:'./auth-page.component.html',
   selector: 'app-auth-layout',
   standalone: true,
-  providers: [
-    AuthStateManager,
-  ]
 })
 export class AuthPageComponent implements OnInit {
   private loginUseCase = inject(LoginWithGoogleUseCase);
@@ -82,8 +78,9 @@ export class AuthPageComponent implements OnInit {
   private handleGoogleCredential(idToken: string): void {
     this.loginUseCase.execute({token:idToken}).subscribe({
       next: (data) => {
+        console.log("session",data)
         this.authStatemanager.setSession(data)
-        this.router.navigate(['/']);
+        this.router.navigate(['/monekai/sampler']);
       },
       error: (err) => {
         console.error('Error al iniciar sesión con Google:', err);

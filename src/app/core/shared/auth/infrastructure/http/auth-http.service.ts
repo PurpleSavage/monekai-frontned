@@ -14,7 +14,7 @@ export class AuthHttp implements AuthPort{
   private http = inject(HttpClient)
   
   loginWithGoogle(dto:GoogleAuthDto):Observable<SessionEntity> {
-    return this.http.post<SessionDto>("/login", dto).pipe(
+    return this.http.post<SessionDto>("/auth/login", dto).pipe(
       map((data) => { 
         return toSessionEntity(data)
       }),
@@ -34,7 +34,7 @@ export class AuthHttp implements AuthPort{
     )
   }
   getProfile(): Observable<SessionEntity> {
-    return this.http.get<SessionDto>('/profile').pipe(
+    return this.http.get<SessionDto>('/auth/profile').pipe(
       map((data) => {
         return toSessionEntity(data)
       }),

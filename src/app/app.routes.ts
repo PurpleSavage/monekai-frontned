@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthPageComponent } from './core/shared/auth/ui/page/auth-page.component';
 import { LandingLayoutComponent } from './landing/layout/landing-layout.component';
 import { ProtectedLayoutComponent } from './core/shared/common/ui/layouts/protected-layout/protected-layout.component';
+import { authGuard } from './core/framewrok-utilities/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { 
     path: 'monekai',
     component: ProtectedLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'sampler',
