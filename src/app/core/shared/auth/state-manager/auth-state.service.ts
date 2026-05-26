@@ -13,6 +13,19 @@ export class AuthStateManager {
   getSession(){
     return this.session()
   }
+  getAccessToken() { 
+    const currentSession = this.session(); 
+    if (currentSession) {
+      return currentSession.accessToken; 
+    }
+    return null;
+  }
+  updateAccessToken(accessToken: string){
+    this.session.update((session) => { 
+      if(session) return { ...session, accessToken }
+      return null
+    })
+  }
   setLoading(loading: boolean){
     this.isLoadingSession.set(loading)
   }

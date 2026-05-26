@@ -8,6 +8,8 @@ import { AuthPort } from './core/shared/auth/application/ports/auth.port';
 import { LoginWithGoogleUseCase } from './core/shared/auth/application/use-cases/login-with-google.use-case';
 import { AuthStateManager } from './core/shared/auth/state-manager/auth-state.service';
 import { GetSessionFromStorageUseCase } from './core/shared/common/application/use-cases/get-session-from-storage.use-case';
+import { GetNewTokenUseCase } from './core/shared/auth/application/use-cases/get-new-token.use-case';
+import { refreshTokenInterceptor } from './core/framewrok-utilities/interceptors/refreshtoken.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -16,10 +18,14 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([apiBaseUrlInterceptor])
+      withInterceptors([
+        apiBaseUrlInterceptor,
+        refreshTokenInterceptor
+      ])
     ),
     AuthStateManager,
     GetSessionFromStorageUseCase,
+    GetNewTokenUseCase,
     LoginWithGoogleUseCase,
     { provide: AuthPort, useClass: AuthHttp}
   ]

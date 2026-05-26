@@ -1,9 +1,10 @@
-import { inject } from "@angular/core/primitives/di";
+
 import { CanActivateFn, Router } from "@angular/router";
 import { AuthStateManager } from "../../shared/auth/state-manager/auth-state.service";
 import { GetProfileUseCase } from "../../shared/auth/application/use-cases/get-profile.use-case";
 import { catchError, map, of } from "rxjs";
 import { GetSessionFromStorageUseCase } from "../../shared/common/application/use-cases/get-session-from-storage.use-case";
+import { inject } from "@angular/core";
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authState = inject(AuthStateManager);

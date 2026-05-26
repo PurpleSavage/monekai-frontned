@@ -7,6 +7,7 @@ import { catchError, map, Observable } from "rxjs";
 import { toSessionEntity } from "../infra-mappers/to-session-entity.mapper";
 import { AppBaseError } from "../../../common/infrastructure/http-errors/app-base.error";
 import { SessionEntity } from "../../domain/entities/session.entity";
+import { AccessTokenDto } from "../../application/dtos/responses/access-token.dto";
 
 
 @Injectable()
@@ -53,4 +54,25 @@ export class AuthHttp implements AuthPort{
       })
     )
   }
+  geNewtoken(): Observable<AccessTokenDto> {
+    return this.http.get<AccessTokenDto>('/auth/refresh-token').pipe(
+      map((data) => {
+        return data
+      }),
+      catchError((err: unknown) => { 
+        let appError: AppBaseError;
+        if (err instanceof HttpErrorResponse) {
+          appError = AppBaseError.fromBackend(err.error);
+        } else {
+          appError = AppBaseError.fromBackend({
+            title: 'network error',
+            message: 'Communication with the server could not be established.',
+            status: 0
+          })
+        }
+        throw appError
+      })
+    )
+  }
+  
 }
