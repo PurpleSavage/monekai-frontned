@@ -1,57 +1,49 @@
 <header class="flex items-center justify-between px-6 py-2 border-b border-white/20">
   
-  <div class="flex items-center gap-6">
+  <div class="flex items-center gap-4">
     
-    <!-- Logo -->
-    <div class="w-7 h-7 shrink-0">
+    <div class="w-10 h-10 rounded-xl overflow-hidden shrink-0 bg-white/5 border border-white/10 flex items-center justify-center">
       <img 
-         ngSrc="monekai-logo.png" 
-         alt="logo monekai platform" 
-         width="28" 
-         height="28"
-         class="w-full h-full object-contain"
-       >
+        src="monekai-logo.png" 
+        alt="logo monekai platform" 
+        class="w-full h-full object-cover scale-105 transition-transform duration-300 hover:scale-110"
+      >
     </div>
 
-    <!-- Créditos -->
     <div class="flex items-center gap-1.5 px-2 py-1 border border-white/10 rounded-lg bg-white/5">
       <svg lucideCoins class="w-4 h-4 text-purple-400"></svg>
       <span class="text-sm font-mono font-medium text-purple-300">
-        {{ sessionData()?.userData?.credits ?? 0 }} credits
+        {{ userData()?.credits ?? 0 }} credits
       </span>
     </div>
-
-    <!-- Notificaciones -->
-    <button class="cursor-pointer hover:opacity-70 transition-opacity text-zinc-400 hover:text-white" type="button">
-      <svg lucideBell class="w-5 h-5"></svg>
-    </button>
-
-    <!-- Usuario / Perfil -->
     <div class="flex items-center gap-2 border-l border-white/10 pl-6">
-      
-      <!-- Avatar: imagen si tiene, inicial si no -->
       <div class="w-6 h-6 rounded-full bg-zinc-700 overflow-hidden shrink-0 flex items-center justify-center">
-        @if (sessionData()?.userData?.hasAvatar) {
+        @if (userData()?.hasAvatar) {
           <img 
-            [src]="sessionData()?.userData?.photoUrl" 
-            [alt]="sessionData()?.userData?.email"
+            [src]="userData()?.photoUrl" 
+            [alt]="userData()?.email"
             class="w-full h-full object-cover"
+            referrerpolicy="no-referrer"
           />
         } @else {
           <span class="text-xs font-semibold text-zinc-300 uppercase">
-            {{ sessionData()?.userData?.email?.charAt(0) }}
+            {{ userData()?.email?.charAt(0) }}
           </span>
         }
       </div>
 
       <p class="text-sm font-medium text-zinc-300">
-        {{ sessionData()?.userData?.email }}
+        {{ userData()?.email }}
       </p>
     </div>
+    <button class="cursor-pointer hover:opacity-70 transition-opacity text-zinc-400 hover:text-white" type="button">
+      <svg lucideBell class="w-5 h-5"></svg>
+    </button>
+
+    
 
   </div>
 
-  <!-- Configuración -->
   <button class="cursor-pointer hover:opacity-70 transition-opacity text-zinc-400 hover:text-white" type="button">
     <svg lucideSettings class="w-5 h-5"></svg>
   </button>

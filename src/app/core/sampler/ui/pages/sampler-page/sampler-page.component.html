@@ -1,3 +1,83 @@
-<div class="">
+<div class="w-full h-full min-h-0 bg-zinc-950 grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
   
+  <div class="lg:col-span-2 bg-zinc-900 border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
+    
+    <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+      <ul class="flex gap-4 items-center">
+        <li>
+          <button 
+            (click)="setSettingsMode('EFFECTS')"
+            [class]="settingsMode() === 'EFFECTS' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+            class="cursor-pointer text-sm">
+            Effects
+          </button>
+        </li>
+        <li>
+          <button 
+            (click)="setSettingsMode('CLIPPER')"
+            [class]="settingsMode() === 'CLIPPER' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+            class="cursor-pointer text-sm">
+            Clipper
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex-1 overflow-y-auto min-h-0 text-zinc-400 pr-1">
+      @if (settingsMode() === 'EFFECTS') {
+        <div>🎛️ Modulo de Efectos</div>
+      } @else if (settingsMode() === 'CLIPPER') {
+        <div>✂️ Visualizador del Clipper</div>
+      }
+    </div>
+  </div>
+
+  <div class="lg:col-span-1 bg-zinc-900 border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
+    
+    <div class="flex items-center justify-between mb-3">
+      <p class="text-sm font-bold tracking-wider uppercase text-zinc-400">Library</p>
+      <button class="text-zinc-400 hover:text-white cursor-pointer transition-colors">
+        <svg lucideSearch class="w-4 h-4"></svg>
+      </button>
+    </div>
+
+    <ul class="flex items-center gap-4 border-b border-white/10 pb-3 mb-4 text-sm">
+      <li>
+        <button 
+          (click)="setListMode('PURE')"
+          [class]="listMode() === 'PURE' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+          class="cursor-pointer">
+          Pure
+        </button>
+      </li>
+      <li>
+        <button 
+          (click)="setListMode('SAVED')"
+          [class]="listMode() === 'SAVED' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+          class="cursor-pointer">
+          Saved
+        </button>
+      </li>
+      <li>
+        <button 
+          (click)="setListMode('UNSAVED')"
+          [class]="listMode() === 'UNSAVED' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+          class="cursor-pointer">
+          Unsaved
+        </button>
+      </li>
+    </ul>
+
+    <div class="flex-1 overflow-y-auto min-h-0 pr-1 text-zinc-400">
+      @if (listMode() === 'PURE') {
+        <div>✨ Lista Pure Samples</div>
+      } @else if (listMode() === 'SAVED') {
+        <div>📦 Lista Saved Samples</div>
+      } @else if (listMode() === 'UNSAVED') {
+        <div>⚠️ Lista Unsaved Samples</div>
+      }
+    </div>
+    
+  </div>
+
 </div>

@@ -1,22 +1,24 @@
 import { Component, inject, OnInit, signal } from "@angular/core";
 import {LucideCoins,LucideBell,LucideSettings} from '@lucide/angular';
 import { GetSessionFromStorageUseCase } from "../../../application/use-cases/get-session-from-storage.use-case";
-import { SessionEntity } from "../../../../auth/domain/entities/session.entity";
-import { NgOptimizedImage } from "@angular/common";
+import { UserEntity } from "../../../../auth/domain/entities/user.entity";
 
 @Component({
   standalone: true, // 👈 ¡SIEMPRE ponlo en la primera línea!
   selector: 'app-shared-header',
   templateUrl: './shared-header.component.html',
-  imports: [LucideBell, LucideCoins, LucideSettings,NgOptimizedImage],
-  providers: [GetSessionFromStorageUseCase],
+  imports: [LucideBell, LucideCoins, LucideSettings],
+  providers: [],
 })
 export class SharedHeaderComponent implements OnInit {
-  public session = inject(GetSessionFromStorageUseCase)
+  public userFromStorage = inject(GetSessionFromStorageUseCase)
 
-  public sessionData = signal<SessionEntity | null>(null)
+  public userData = signal<UserEntity | null>(null)
   ngOnInit(): void {
-    this.sessionData.set(this.session.execute())
+    const userData = this.userFromStorage.execute()
+    if (userData) { 
+      this.userData.set(userData) 
+    }
   }
   
 } 

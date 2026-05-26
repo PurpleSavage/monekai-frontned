@@ -1,7 +1,8 @@
-<div class="min-h-screen flex flex-col bg-black">
+<div class="h-screen flex flex-col bg-black overflow-hidden">
   <app-shared-header></app-shared-header>
   <app-shared-navigator></app-shared-navigator>
-  <div class="flex-1">
+  
+  <div class="flex-1 min-h-0 h-full">
     <router-outlet></router-outlet>
   </div>
 </div>

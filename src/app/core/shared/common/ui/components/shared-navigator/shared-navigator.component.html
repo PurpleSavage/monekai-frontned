@@ -1,23 +1,30 @@
-<nav class="w-full border-b border-white/20 px-6 py-2">
+<nav class="w-full border-b border-white/20 px-6 pt-2">
   <ul class="flex items-center gap-6"> 
-    <li>
+    
+    <li class="flex">
       <a routerLink="/monekai/sampler" 
-         routerLinkActive="border-b-2 border-white pb-1" 
+         class="text-zinc-400 hover:text-white transition-colors pb-2 block"
+         routerLinkActive="border-b-2 border-white !text-white -mb-[1px]" 
          [routerLinkActiveOptions]="{ exact: true }">
          Sampler
       </a>
     </li>
-    <li>
+
+    <li class="flex">
       <a routerLink="/monekai/for-you" 
-         routerLinkActive="border-b-2 border-white pb-1">
+         class="text-zinc-400 hover:text-white transition-colors pb-2 block"
+         routerLinkActive="border-b-2 border-white !text-white -mb-[1px]">
          For you
       </a>
     </li>
-    <li>
+
+    <li class="flex">
       <a routerLink="/monekai/account" 
-         routerLinkActive="border-b-2 border-white pb-1">
+         class="text-zinc-400 hover:text-white transition-colors pb-2 block"
+         routerLinkActive="border-b-2 border-white !text-white -mb-[1px]">
          Account
       </a>
     </li>
+
   </ul>
 </nav>

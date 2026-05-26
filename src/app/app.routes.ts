@@ -16,7 +16,7 @@ export const routes: Routes = [
   { 
     path: 'monekai',
     component: ProtectedLayoutComponent,
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     children: [
       {
         path: 'sampler',

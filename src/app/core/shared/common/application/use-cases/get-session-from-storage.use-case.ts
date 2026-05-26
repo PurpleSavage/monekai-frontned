@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { SessionEntity } from "../../../auth/domain/entities/session.entity";
 import { ContextStorageStrategy, StorageStrategies } from "../../infrastructure/adapters/context-strategy-storage.service";
+import { UserEntity } from "../../../auth/domain/entities/user.entity";
 
 @Injectable() 
 export class GetSessionFromStorageUseCase {
@@ -8,10 +8,10 @@ export class GetSessionFromStorageUseCase {
   constructor(
     private storageService: ContextStorageStrategy,
   ) { }
-  execute():SessionEntity | null { 
+  execute():UserEntity | null { 
     const session = this.storageService
       .use(StorageStrategies.LOCAL)
-      .get<SessionEntity>('user-data')
+      .get<UserEntity>('user-data')
     return session
   }
 }
