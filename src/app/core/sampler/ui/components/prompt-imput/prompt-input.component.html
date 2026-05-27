@@ -2,14 +2,15 @@
   
   <div class="bg-zinc-950 border border-white/20 rounded-2xl p-4 shadow-2xl focus-within:border-purple-500/50 transition-colors flex flex-col gap-3">
     
-    <div class="flex items-center gap-2 px-1 border-b border-white/5 pb-2">
+    <div class="flex  items-center gap-2 border-b border-white/20 pb-2">
       <svg lucideMusic class="w-4 h-4 text-zinc-500"></svg>
       <input 
         type="text" 
         formControlName="sampleName"
-        placeholder="Nombre del sample..."
+        placeholder="Sample name..."
         maxLength="50"
-        class="bg-transparent text-sm font-medium text-zinc-200 outline-none w-full placeholder-zinc-600"
+        class="bg-transparent text-sm 
+        font-medium text-zinc-200 outline-none w-full placeholder-zinc-600"
       />
       <span class="text-[10px] text-zinc-600 font-mono">
         {{ sampleNameControl.value.length }}/50
@@ -19,7 +20,7 @@
     <div class="w-full relative">
       <textarea
         formControlName="prompt"
-        placeholder="Describe el sonido, género o instrumentos que imaginas para tu sample..."
+        placeholder="Describe the sound, genre, or instruments you envision for your sample..."
         maxLength="500"
         rows="3"
         class="w-full bg-transparent text-white placeholder-zinc-500 outline-none resize-none text-sm leading-relaxed pr-12 class-scroll"

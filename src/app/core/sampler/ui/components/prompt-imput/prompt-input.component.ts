@@ -34,7 +34,7 @@ export class PromptInputComponent {
       nonNullable: true,
       validators: [Validators.required]
     }),
-    sampleName: new FormControl<string>('My Awesome Sample', {
+    sampleName: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(50)]
     })

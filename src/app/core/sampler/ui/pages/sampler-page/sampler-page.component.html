@@ -31,21 +31,24 @@
             bg-purple-500 hover:bg-purple-400 px-2 rounded-md py-1 transition-colors cursor-pointer">
             <svg lucideSave class="w-4 h-4"></svg>Save project
           </button>
-          <button class="flex items-center gap-2 text-white font-medium text-sm
+          <button 
+            (click)="setVisiblePromptComponent(!isVisiblePromptComponent())"
+            class="flex items-center gap-2 text-white font-medium text-sm
             bg-purple-500 hover:bg-purple-400 px-2 rounded-md py-1 transition-colors cursor-pointer">
-            <svg lucideLayersPlus class="w-4 h-4"></svg>Create project
+            <svg lucideLayersPlus class="w-4 h-4"></svg>{{ isVisiblePromptComponent() ? 'Close text field' : 'Open text field' }}
           </button>
         </div> 
       </div>
     </div>
 
-    <div class="flex-1 overflow-y-auto min-h-0 text-zinc-400 pr-1 py-5">
+    <div class=" overflow-y-auto  text-zinc-400 pr-1 py-5 ">
       @if (settingsMode() === 'EFFECTS') {
         <app-audio-effects/>
       } @else if (settingsMode() === 'CLIPPER') {
         <div>✂️ Visualizador del Clipper</div>
       }
     </div>
+    <app-wave-surfer class="flex-1 "/>
   </div>
 
   <div class="lg:col-span-1 bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
@@ -96,4 +99,10 @@
     
   </div>
 
+</div>
+
+<div 
+  [class]="isVisiblePromptComponent() ? 'translate-y-0' : 'translate-y-full'"
+  class="absolute bottom-0 left-0 w-full z-40 transition-transform duration-300 ease-out ">
+  <app-prompt-input></app-prompt-input>
 </div>

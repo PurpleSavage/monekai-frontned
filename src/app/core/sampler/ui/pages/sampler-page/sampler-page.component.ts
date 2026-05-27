@@ -5,6 +5,8 @@ import { LIST_MODE_PARAM, ListMode } from "../../ui-options/list-mode.options";
 import { SETTINGS_MODE_PARAM, SettingsMode } from "../../ui-options/settins-mode.options";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { AudioEffectsPageComponent } from "../../components/audio-effects/audio-effects.component";
+import { WaveSurferComponent } from "../../components/wave-surfer/wave-surfer.component";
+import { PromptInputComponent } from "../../components/prompt-imput/prompt-input.component";
 
 @Component({
   selector: 'app-sampler-page',
@@ -14,7 +16,9 @@ import { AudioEffectsPageComponent } from "../../components/audio-effects/audio-
     LucideSearch,
     LucideSave,
     LucideLayersPlus,
-    AudioEffectsPageComponent
+    AudioEffectsPageComponent,
+    WaveSurferComponent,
+    PromptInputComponent
   ], 
   host: {
     class: 'block w-full h-full' 
@@ -24,9 +28,8 @@ export class SamplerPageComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   
-  
+  public isVisiblePromptComponent = signal<boolean>(false)
   public listMode = signal<ListMode>(LIST_MODE_PARAM.listPure);
-  // 👇 Cambiado a public para poder evaluarlo directamente en el HTML
   public settingsMode = signal<SettingsMode>(SETTINGS_MODE_PARAM.effects); 
   public isCreateMode = signal<boolean>(false);
   public queryParams = toSignal(this.route.queryParams);
@@ -70,7 +73,9 @@ export class SamplerPageComponent implements OnInit {
       queryParamsHandling: 'merge', 
     });
   }
-
+  public setVisiblePromptComponent(visible: boolean) {
+    this.isVisiblePromptComponent.set(visible);
+  }
   public getListMode() {
     return this.listMode();
   }
