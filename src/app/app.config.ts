@@ -10,6 +10,7 @@ import { AuthStateManager } from './core/shared/auth/state-manager/auth-state.se
 import { GetSessionFromStorageUseCase } from './core/shared/common/application/use-cases/get-session-from-storage.use-case';
 import { GetNewTokenUseCase } from './core/shared/auth/application/use-cases/get-new-token.use-case';
 import { refreshTokenInterceptor } from './core/framewrok-utilities/interceptors/refreshtoken.interceptor';
+import { AudioStateService } from './core/sampler/state-manager/audio-state.service';
 
 
 export const appConfig: ApplicationConfig = {
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     GetSessionFromStorageUseCase,
     GetNewTokenUseCase,
     LoginWithGoogleUseCase,
+    AudioStateService,
     { provide: AuthPort, useClass: AuthHttp}
   ]
 };

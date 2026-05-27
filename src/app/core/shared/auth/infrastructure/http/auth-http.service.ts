@@ -12,7 +12,7 @@ import { AccessTokenDto } from "../../application/dtos/responses/access-token.dt
 
 @Injectable()
 export class AuthHttp implements AuthPort{
-  private http = inject(HttpClient)
+  constructor(private http: HttpClient) { }
   
   loginWithGoogle(dto:GoogleAuthDto):Observable<SessionEntity> {
     return this.http.post<SessionDto>("/auth/login", dto).pipe(

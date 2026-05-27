@@ -1,0 +1,94 @@
+<form [formGroup]="createSongFromGroup" (ngSubmit)="onSubmit()" class="w-full max-w-4xl mx-auto p-4">
+  
+  <div class="bg-zinc-950 border border-white/20 rounded-2xl p-4 shadow-2xl focus-within:border-purple-500/50 transition-colors flex flex-col gap-3">
+    
+    <div class="flex items-center gap-2 px-1 border-b border-white/5 pb-2">
+      <svg lucideMusic class="w-4 h-4 text-zinc-500"></svg>
+      <input 
+        type="text" 
+        formControlName="sampleName"
+        placeholder="Nombre del sample..."
+        maxLength="50"
+        class="bg-transparent text-sm font-medium text-zinc-200 outline-none w-full placeholder-zinc-600"
+      />
+      <span class="text-[10px] text-zinc-600 font-mono">
+        {{ sampleNameControl.value.length }}/50
+      </span>
+    </div>
+
+    <div class="w-full relative">
+      <textarea
+        formControlName="prompt"
+        placeholder="Describe el sonido, género o instrumentos que imaginas para tu sample..."
+        maxLength="500"
+        rows="3"
+        class="w-full bg-transparent text-white placeholder-zinc-500 outline-none resize-none text-sm leading-relaxed pr-12 class-scroll"
+      ></textarea>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/5">
+      
+      <div class="flex flex-wrap items-center gap-2">
+        
+        <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-zinc-300 hover:bg-white/10 transition-colors">
+          <svg lucideCpu class="w-3.5 h-3.5 text-purple-400"></svg>
+          <select formControlName="modelVersion" class="bg-transparent outline-none cursor-pointer pr-1 font-medium text-zinc-300">
+            @for (model of models; track model) {
+              <option [value]="model" class="bg-zinc-900 text-white text-xs">{{ model }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-zinc-300 hover:bg-white/10 transition-colors">
+          <svg lucideClock class="w-3.5 h-3.5 text-blue-400"></svg>
+          <input 
+            type="number" 
+            formControlName="duration" 
+            min="1" 
+            max="120"
+            class="bg-transparent outline-none w-8 text-center font-mono font-medium text-zinc-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          />
+          <span class="text-zinc-500 font-medium">s</span>
+        </div>
+
+        <div class="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-xl text-xs text-zinc-300 hover:bg-white/10 transition-colors">
+          <svg lucideDisc class="w-3.5 h-3.5 text-emerald-400"></svg>
+          <select formControlName="outputFormat" class="bg-transparent outline-none cursor-pointer font-medium uppercase text-zinc-300">
+            @for (format of formats; track format) {
+              <option [value]="format" class="bg-zinc-900 text-white text-xs uppercase">{{ format }}</option>
+            }
+          </select>
+        </div>
+
+      </div>
+
+      <div class="flex items-center gap-3 ml-auto">
+        <span class="text-xs text-zinc-600 font-mono">
+          {{ promptControl.value.length }}/500
+        </span>
+
+        <button 
+          type="submit"
+          [disabled]="createSongFromGroup.invalid"
+          class="bg-purple-600 hover:bg-purple-500 disabled:bg-zinc-800 text-white disabled:text-zinc-600 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer disabled:cursor-not-allowed shadow-lg shadow-purple-900/20">
+          <span>Generate</span>
+          <svg lucideSparkles class="w-3.5 h-3.5"></svg>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  @if (promptControl.touched && promptControl.hasError('maxlength')) {
+    <p class="text-red-400 text-xs mt-1 px-2 flex items-center gap-1">
+      ⚠️ El prompt no puede superar los 500 caracteres.
+    </p>
+  }
+  @if (sampleNameControl.touched && sampleNameControl.hasError('maxlength')) {
+    <p class="text-red-400 text-xs mt-1 px-2 flex items-center gap-1">
+      ⚠️ El nombre del sample no puede superar los 50 soles de longitud.
+    </p>
+  }
+
+</form>
