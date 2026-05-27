@@ -1,0 +1,136 @@
+<div class="grid grid-cols-4 gap-8 w-full">
+
+  <div class="flex flex-col gap-3">
+    <div class="effect-header flex justify-between items-center text-[11px] uppercase tracking-wider font-semibold text-zinc-400">
+      <span>Reverb</span>
+      <span class="text-purple-400 font-bold">{{ reverb() }}%</span>
+    </div>
+    <input
+      type="range"
+      min="0"
+      max="100"
+      class="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
+      [ngModel]="reverb()"
+      (ngModelChange)="reverb.set($event)"
+    />
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="effect-header flex justify-between items-center text-[11px] uppercase tracking-wider font-semibold text-zinc-400">
+      <span>Slow / Pitch</span>
+      <span class="text-purple-400 font-bold">{{ slowPitch() }}st</span>
+    </div>
+    <input
+      type="range"
+      min="-24"
+      max="24"
+      class="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
+      [ngModel]="slowPitch()"
+      (ngModelChange)="slowPitch.set($event)"
+    />
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="effect-header flex justify-between items-center text-[11px] uppercase tracking-wider font-semibold text-zinc-400">
+      <span>Saturation</span>
+      <span class="text-purple-400 font-bold">{{ saturation() }}%</span>
+    </div>
+    <input
+      type="range"
+      min="0"
+      max="100"
+      class="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
+      [ngModel]="saturation()"
+      (ngModelChange)="saturation.set($event)"
+    />
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="effect-header flex justify-between items-center text-[11px] uppercase tracking-wider font-semibold text-zinc-400">
+      <span>Delay</span>
+      <span class="text-purple-400 font-bold">{{ delay() }}%</span>
+    </div>
+    <input
+      type="range"
+      min="0"
+      max="100"
+      class="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
+      [ngModel]="delay()"
+      (ngModelChange)="delay.set($event)"
+    />
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="effect-header flex justify-between items-center text-[11px] uppercase tracking-wider font-semibold text-zinc-400">
+      <span>Low-Pass</span>
+      <span class="text-purple-400 font-bold">{{ lowPass() }}Hz</span>
+    </div>
+    <input
+      type="range"
+      min="20"
+      max="20000"
+      class="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
+      [ngModel]="lowPass()"
+      (ngModelChange)="lowPass.set($event)"
+    />
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="effect-header flex justify-between items-center text-[11px] uppercase tracking-wider font-semibold text-zinc-400">
+      <span>High-Pass</span>
+      <span class="text-purple-400 font-bold">{{ highPass() }}Hz</span>
+    </div>
+    <input
+      type="range"
+      min="20"
+      max="20000"
+      class="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
+      [ngModel]="highPass()"
+      (ngModelChange)="highPass.set($event)"
+    />
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="effect-header flex justify-between items-center text-[11px] uppercase tracking-wider font-semibold text-zinc-400">
+      <span>Gain</span>
+      <span class="text-purple-400 font-bold">{{ gain() }}dB</span>
+    </div>
+    <input
+      type="range"
+      min="-24"
+      max="24"
+      step="0.1"
+      class="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
+      [ngModel]="gain()"
+      (ngModelChange)="gain.set($event)"
+    />
+  </div>
+
+  <div class="flex flex-col gap-3 items-start">
+    <div class="effect-header flex justify-between items-center w-full text-[11px] uppercase tracking-wider font-semibold text-zinc-400">
+      <span>Reverse</span>
+      <span [class]="reverse() ? 'text-purple-400 font-bold' : 'text-zinc-500'">
+        {{ reverse() ? 'ACTIVE' : 'OFF' }}
+      </span>
+    </div>
+
+    <label class="relative inline-flex items-center cursor-pointer select-none">
+      <input
+        type="checkbox"
+        class="sr-only peer"
+        [ngModel]="reverse()"
+        (ngModelChange)="reverse.set($event)"
+      />
+      
+      <div class="w-12 h-6 bg-zinc-700 rounded-full border border-zinc-600/40 
+                  peer-checked:bg-purple-500 peer-checked:border-purple-400/20
+                  transition-all duration-300
+                  after:content-[''] after:absolute after:top-[4px] after:left-[4px] 
+                  after:bg-zinc-400 after:rounded-full after:h-4 after:w-4 after:transition-all after:duration-300
+                  peer-checked:after:translate-x-6 peer-checked:after:bg-white
+                  peer-checked:after:shadow-[0_0_8px_rgba(168,85,247,0.8)]">
+      </div>
+    </label>
+  </div>
+
+</div>

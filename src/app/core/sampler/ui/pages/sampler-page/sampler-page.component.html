@@ -1,38 +1,54 @@
-<div class="w-full h-full min-h-0 bg-zinc-950 grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+<div class="w-full h-full min-h-0  grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
   
-  <div class="lg:col-span-2 bg-zinc-900 border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
+  <div class="lg:col-span-2 bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
     
-    <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
-      <ul class="flex gap-4 items-center">
-        <li>
-          <button 
-            (click)="setSettingsMode('EFFECTS')"
-            [class]="settingsMode() === 'EFFECTS' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
-            class="cursor-pointer text-sm">
-            Effects
+    <div class=" border-b border-white/10 pb-3">
+      <div class="flex items-center justify-between mb-3">
+        <p class="text-sm font-bold tracking-wider uppercase text-zinc-400">Sampler</p>
+       
+      </div>
+      <div class="flex items-center">
+        <ul class="flex gap-4 items-center flex-1">
+          <li>
+            <button 
+              (click)="setSettingsMode('EFFECTS')"
+              [class]="settingsMode() === 'EFFECTS' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+              class="cursor-pointer text-sm">
+              Effects
+            </button>
+          </li>
+          <li>
+            <button 
+              (click)="setSettingsMode('CLIPPER')"
+              [class]="settingsMode() === 'CLIPPER' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+              class="cursor-pointer text-sm">
+              Clipper
+            </button>
+          </li>
+        </ul>
+        <div class="flex items-center gap-3">
+          <button class="flex items-center gap-2 text-white font-medium text-sm
+            bg-purple-500 hover:bg-purple-400 px-2 rounded-md py-1 transition-colors cursor-pointer">
+            <svg lucideSave class="w-4 h-4"></svg>Save project
           </button>
-        </li>
-        <li>
-          <button 
-            (click)="setSettingsMode('CLIPPER')"
-            [class]="settingsMode() === 'CLIPPER' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
-            class="cursor-pointer text-sm">
-            Clipper
+          <button class="flex items-center gap-2 text-white font-medium text-sm
+            bg-purple-500 hover:bg-purple-400 px-2 rounded-md py-1 transition-colors cursor-pointer">
+            <svg lucideLayersPlus class="w-4 h-4"></svg>Create project
           </button>
-        </li>
-      </ul>
+        </div> 
+      </div>
     </div>
 
-    <div class="flex-1 overflow-y-auto min-h-0 text-zinc-400 pr-1">
+    <div class="flex-1 overflow-y-auto min-h-0 text-zinc-400 pr-1 py-5">
       @if (settingsMode() === 'EFFECTS') {
-        <div>🎛️ Modulo de Efectos</div>
+        <app-audio-effects/>
       } @else if (settingsMode() === 'CLIPPER') {
         <div>✂️ Visualizador del Clipper</div>
       }
     </div>
   </div>
 
-  <div class="lg:col-span-1 bg-zinc-900 border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
+  <div class="lg:col-span-1 bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
     
     <div class="flex items-center justify-between mb-3">
       <p class="text-sm font-bold tracking-wider uppercase text-zinc-400">Library</p>

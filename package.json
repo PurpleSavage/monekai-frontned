@@ -21,6 +21,7 @@
     "@omnedia/ngx-aurora": "^4.0.1",
     "@omnedia/ngx-ripple": "^4.0.1",
     "@omnedia/ngx-silk": "^4.0.1",
+    "@taiga-ui/layout": "^5.8.0",
     "rxjs": "~7.8.0",
     "three": "^0.184.0",
     "tslib": "^2.3.0"

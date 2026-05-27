@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -12,23 +16,17 @@ import { GetNewTokenUseCase } from './core/shared/auth/application/use-cases/get
 import { refreshTokenInterceptor } from './core/framewrok-utilities/interceptors/refreshtoken.interceptor';
 import { AudioStateService } from './core/sampler/state-manager/audio-state.service';
 
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([
-        apiBaseUrlInterceptor,
-        refreshTokenInterceptor
-      ])
-    ),
+    provideHttpClient(withInterceptors([apiBaseUrlInterceptor, refreshTokenInterceptor])),
     AuthStateManager,
     GetSessionFromStorageUseCase,
     GetNewTokenUseCase,
     LoginWithGoogleUseCase,
     AudioStateService,
-    { provide: AuthPort, useClass: AuthHttp}
-  ]
+    { provide: AuthPort, useClass: AuthHttp },
+  ],
 };
