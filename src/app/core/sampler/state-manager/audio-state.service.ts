@@ -3,7 +3,8 @@ import { SampleEntity } from "../domain/entities/sample.entity";
 
 @Injectable()
 export class AudioStateService {
-  audiosGenerated = signal<SampleEntity[]>([])
+  public audiosGenerated = signal<SampleEntity[]>([])
+  
   addAudio(audio: SampleEntity) {
     this.audiosGenerated.update((audios) => [...audios, audio]);
   }
