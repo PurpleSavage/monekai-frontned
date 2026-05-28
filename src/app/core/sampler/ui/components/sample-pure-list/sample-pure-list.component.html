@@ -1,0 +1,54 @@
+<div #container class="h-full w-full overflow-y-auto">
+
+  @if (initialLoading()) {
+    <app-skeleton-list />
+  } 
+  
+  @else if (errorListSamples() && pageSample() === 1) {
+    <div class="flex flex-col items-center justify-center h-64 px-4 text-center">
+      <p class="text-sm font-medium text-red-400">
+        {{ errorListSamples() }}
+      </p>
+      <button 
+        (click)="retryLoad()" 
+        class="mt-3 px-4 py-1.5 text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg transition-colors border border-zinc-700"
+      >
+        Try again
+      </button>
+    </div>
+  } 
+  
+  @else {
+    @for (
+      audio of audioStateService.audiosGenerated().items;
+      track audio.id
+    ) {
+      <app-audio-card [audio]="audio" />
+    } 
+    @empty {
+      <div class="flex flex-col items-center justify-center h-48 px-4 text-center">
+        <p class="text-sm font-medium text-zinc-400">No samples generated yet</p>
+        <p class="text-xs text-zinc-600 mt-1">Create your first audio sample to see it here.</p>
+      </div>
+    }
+
+    @if (loadingMore()) {
+      <app-loader />
+    }
+
+    @if (errorListSamples() && pageSample() > 1) {
+      <div class="flex items-center justify-between p-3 mt-2 rounded-xl border border-red-900/30 bg-red-950/10 text-xs">
+        <span class="text-red-400 font-medium">{{ errorListSamples() }}</span>
+        <button 
+          (click)="retryLoad()" 
+          class="px-3 py-1 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 rounded-md transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    }
+
+    <div #boxGuard class="h-1"></div>
+  }
+
+</div>

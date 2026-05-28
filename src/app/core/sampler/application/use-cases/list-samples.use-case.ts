@@ -17,7 +17,7 @@ export class ListSamplesUseCase {
     private metadataPersistenceService: MetadataPersistencePort
   ) { }
 
-  public execute(dto: PaginatedRequestDTO): Observable<PaginatedSampleResponseDTO> { 
+  public execute(dto: PaginatedRequestDTO): Observable<PaginatedResponseDTO<SampleEntity>> { 
     return this.samplerPersistenceService.listSamples(dto).pipe(
       take(1),
       switchMap((localSamples: SampleEntity[]) => { 
@@ -31,6 +31,7 @@ export class ListSamplesUseCase {
                 total: metadata ? metadata.total : localSamples.length, 
                 page: dto.page,
                 pageSize: dto.limit,
+                hasMore:(dto.page * dto.limit) <(metadata ? metadata.total : localSamples.length)
               };
             })
           );

@@ -89,7 +89,7 @@
 
     <div class="flex-1 overflow-y-auto min-h-0 pr-1 text-zinc-400">
       @if (listMode() === 'PURE') {
-        <div>✨ Lista Pure Samples</div>
+        <app-sample-pure-list></app-sample-pure-list>
       } @else if (listMode() === 'SAVED') {
         <div>📦 Lista Saved Samples</div>
       } @else if (listMode() === 'UNSAVED') {

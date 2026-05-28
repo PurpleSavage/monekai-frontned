@@ -24,11 +24,13 @@ export class SamplerHttpService implements SamplerPort {
     return this.http.get<PaginatedSampleResponseDTO>("/audio/samples", { params }).pipe(
       map((data) => {
         const samples = data.items.map((item) => toSampleEntity(item))
+        const hasMore =(data.page * data.pageSize) < data.total;
         return {
           items: samples,
           total: data.total,
           page: data.page,
           pageSize: data.pageSize,
+          hasMore
         }
       }),
       catchError((err: unknown) => { 

@@ -3,4 +3,5 @@ export interface PaginatedResponseDTO<T> {
   total: number;
   page: number;
   pageSize: number;
+  hasMore: boolean;
 }
