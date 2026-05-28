@@ -15,6 +15,13 @@ import { GetSessionFromStorageUseCase } from './core/shared/common/application/u
 import { GetNewTokenUseCase } from './core/shared/auth/application/use-cases/get-new-token.use-case';
 import { refreshTokenInterceptor } from './core/framewrok-utilities/interceptors/refreshtoken.interceptor';
 import { AudioStateService } from './core/sampler/state-manager/audio-state.service';
+import { MetadataPersistencePort } from './core/shared/common/application/ports/metadata-persistence.port';
+import { MetadataPersistenceService } from './core/shared/common/infrastructure/persistence/metadata-persistence.service';
+import { ListSamplesUseCase } from './core/sampler/application/use-cases/list-samples.use-case';
+import { SamplerPersistencePort } from './core/sampler/application/ports/sampler-persistence.port';
+import { SamplerPersistenceService } from './core/sampler/infrastructure/persistence/sampler-persistence.service';
+import { SamplerHttpService } from './core/sampler/infrastructure/http/sampler-http.service';
+import { SamplerPort } from './core/sampler/application/ports/sampler.port';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +34,10 @@ export const appConfig: ApplicationConfig = {
     GetNewTokenUseCase,
     LoginWithGoogleUseCase,
     AudioStateService,
+    ListSamplesUseCase,
+    {provide: SamplerPersistencePort,useClass: SamplerPersistenceService},
+    {provide: SamplerPort,useClass:SamplerHttpService},
     { provide: AuthPort, useClass: AuthHttp },
+    {provide:MetadataPersistencePort,useClass:MetadataPersistenceService}
   ],
 };

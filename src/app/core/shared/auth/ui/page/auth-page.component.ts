@@ -1,10 +1,11 @@
-import { Component,  inject,  OnInit, signal } from "@angular/core";
+import { Component,  DestroyRef,  inject,  OnInit, signal } from "@angular/core";
 import { environment } from "../../../../../../environments/environment.development";
 import type { CredentialResponse } from 'google-one-tap';
 import { LoginWithGoogleUseCase } from "../../application/use-cases/login-with-google.use-case";
 import { Router } from "@angular/router";
 import { AuthStateManager } from "../../state-manager/auth-state.service";
 import { AppBaseError } from "../../../common/infrastructure/http-errors/app-base.error";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 
 declare const google: any;
@@ -15,13 +16,21 @@ declare const google: any;
 })
 export class AuthPageComponent implements OnInit {
   private loginUseCase = inject(LoginWithGoogleUseCase);
-  private router = inject(Router)
-  private authStatemanager = inject(AuthStateManager)
-  public isGoogleSdkLoaded = signal(false)
-  public errorAuth = signal<string>('')
+  private router = inject(Router);
+  private authStatemanager = inject(AuthStateManager);
+  private destroyRef = inject(DestroyRef); // <-- Inyectamos el manejador de destrucción
+
+  public isGoogleSdkLoaded = signal(false);
+  public errorAuth = signal<string>('');
+  private intervalId: any; // <-- Guardamos la referencia del intervalo
 
   ngOnInit(): void {
     this.loadGoogleScript();
+
+    // Nos aseguramos de limpiar Google y los intervalos cuando el componente muera
+    this.destroyRef.onDestroy(() => {
+      this.cleanupGoogle();
+    });
   }
 
   private loadGoogleScript() {
@@ -47,9 +56,12 @@ export class AuthPageComponent implements OnInit {
   }
 
   private waitForGoogle() {
-    const interval = setInterval(() => {
+    // Limpiamos cualquier intervalo previo por seguridad
+    if (this.intervalId) clearInterval(this.intervalId);
+
+    this.intervalId = setInterval(() => {
       if (typeof window.google !== 'undefined' && window.google?.accounts) {
-        clearInterval(interval);
+        clearInterval(this.intervalId);
         this.initGoogleButton();
       }
     }, 50);
@@ -76,18 +88,31 @@ export class AuthPageComponent implements OnInit {
   }
 
   private handleGoogleCredential(idToken: string): void {
-    this.loginUseCase.execute({token:idToken}).subscribe({
-      next: (data) => {
-        console.log("session",data)
-        this.authStatemanager.setSession(data)
-        this.router.navigate(['/monekai/sampler']);
-      },
-      error: (err) => {
-        console.error('Error al iniciar sesión con Google:', err);
-        if (err instanceof AppBaseError) {
-          this.errorAuth.set(err.message)
+    this.loginUseCase.execute({ token: idToken })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef) 
+      )
+      .subscribe({
+        next: (data) => {
+          this.authStatemanager.setSession(data);
+          this.router.navigate(['/monekai/sampler']);
+        },
+        error: (err) => {
+          console.error('Error to starting session with Google', err);
+          if (err instanceof AppBaseError) {
+            this.errorAuth.set(err.message);
+          }
         }
-      }
-    });
+      });
+  }
+
+  // Método dedicado a limpiar todo rastro de este componente
+  private cleanupGoogle() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+    if (typeof window.google !== 'undefined' && window.google?.accounts?.id) {
+      google.accounts.id.cancel(); 
+    }
   }
 }

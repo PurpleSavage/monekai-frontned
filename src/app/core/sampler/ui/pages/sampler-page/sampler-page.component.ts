@@ -8,6 +8,8 @@ import { AudioEffectsPageComponent } from "../../components/audio-effects/audio-
 import { WaveSurferComponent } from "../../components/wave-surfer/wave-surfer.component";
 import { PromptInputComponent } from "../../components/prompt-imput/prompt-input.component";
 
+
+
 @Component({
   selector: 'app-sampler-page',
   templateUrl: './sampler-page.component.html',
@@ -27,6 +29,7 @@ import { PromptInputComponent } from "../../components/prompt-imput/prompt-input
 export class SamplerPageComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+
   
   public isVisiblePromptComponent = signal<boolean>(false)
   public listMode = signal<ListMode>(LIST_MODE_PARAM.listPure);
@@ -35,7 +38,10 @@ export class SamplerPageComponent implements OnInit {
   public queryParams = toSignal(this.route.queryParams);
   
   ngOnInit(): void {
-    // Escucha inicial de parámetros de la URL
+    this.initQueryParams();
+  }
+  
+  private initQueryParams() { 
     const listModeParams = this.queryParams()?.["listMode"] ?? LIST_MODE_PARAM.listPure;
     const settingsModeParams = this.queryParams()?.["settingsMode"] ?? SETTINGS_MODE_PARAM.effects;
     const isCreateModeParams = this.queryParams()?.["isCreateMode"] ?? false;
@@ -49,7 +55,7 @@ export class SamplerPageComponent implements OnInit {
       this.settingsMode.set(settingsModeParams as SettingsMode);
     }
   }
-
+  
   public setListMode(mode: ListMode) {
     this.listMode.set(mode);
     this.router.navigate([], {
