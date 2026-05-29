@@ -27,7 +27,7 @@ export class ListSamplesUseCase {
           return from(this.metadataPersistenceService.getMetadataFromOrigin('samples')).pipe(
             map((metadata) => {
               return {
-                items: localSamples,
+                data: localSamples,
                 total: metadata ? metadata.total : localSamples.length, 
                 page: dto.page,
                 pageSize: dto.limit,
@@ -48,7 +48,7 @@ export class ListSamplesUseCase {
             };
 
             // Guardamos los samples de la página actual en caché
-            this.samplerPersistenceService.saveSamples(apiResponse.items).subscribe({
+            this.samplerPersistenceService.saveSamples(apiResponse.data).subscribe({
               error: err => console.error('Background samples cache save failed', err)
             });
 

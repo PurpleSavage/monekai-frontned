@@ -7,6 +7,7 @@ import { toSignal } from "@angular/core/rxjs-interop";
 import { AudioEffectsPageComponent } from "../../components/audio-effects/audio-effects.component";
 import { WaveSurferComponent } from "../../components/wave-surfer/wave-surfer.component";
 import { PromptInputComponent } from "../../components/prompt-imput/prompt-input.component";
+import { SamplePureListComponent } from "../../components/sample-pure-list/sample-pure-list.component";
 
 
 
@@ -20,7 +21,8 @@ import { PromptInputComponent } from "../../components/prompt-imput/prompt-input
     LucideLayersPlus,
     AudioEffectsPageComponent,
     WaveSurferComponent,
-    PromptInputComponent
+    PromptInputComponent,
+    SamplePureListComponent
   ], 
   host: {
     class: 'block w-full h-full' 

@@ -6,7 +6,7 @@ import { PaginatedResponseDTO } from "../../shared/common/application/dtos/respo
 export class AudioStateService {
 
   public audiosGenerated =signal<PaginatedResponseDTO<SampleEntity>>({
-      items: [],
+      data: [],
       total: 0,
       page: 1,
       pageSize: 10,
@@ -30,9 +30,9 @@ export class AudioStateService {
       pageSize: data.pageSize,
       hasMore: data.hasMore,
 
-      items: [
-        ...prev.items,
-        ...data.items
+      data: [
+        ...prev.data,
+        ...data.data
       ]
 
     }));
@@ -41,7 +41,7 @@ export class AudioStateService {
   resetAudios() {
 
     this.audiosGenerated.set({
-      items: [],
+      data: [],
       total: 0,
       page: 1,
       pageSize: 10,
@@ -54,10 +54,22 @@ export class AudioStateService {
 
     this.audiosGenerated.update(prev => ({
       ...prev,
-      items: prev.items.filter(
+      items: prev.data.filter(
         audio => audio.id !== id
       )
     }));
 
+  }
+
+  addAudio(audio: SampleEntity) {
+  
+    this.audiosGenerated.update(prev => ({
+  
+      ...prev,
+  
+      items: [audio, ...prev.data]
+  
+    }));
+  
   }
 }

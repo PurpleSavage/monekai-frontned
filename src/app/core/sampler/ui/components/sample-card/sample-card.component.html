@@ -1,51 +1,109 @@
 <div
-  class="group flex items-center gap-4 rounded-xl border border-transparent bg-transparent
-  hover:bg-zinc-900/50 p-3 transition-all duration-200 cursor-pointer"
-  [class.!border-purple-500/30]="sample.status === 'playing'"
-  [class.!bg-purple-950/10]="sample.status === 'playing'"
+  class="group flex items-center gap-4 rounded-xl border border-transparent
+  bg-transparent hover:bg-zinc-900/50 p-3 transition-all duration-200 cursor-pointer"
+  [class.!border-purple-500/30]="isPlaying()"
+  [class.!bg-purple-950/10]="isPlaying()"
 >
-  <!-- Botón de Reproducción (Play / Pause) -->
-  <button 
-    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-zinc-400 group-hover:text-white transition-colors"
-    [class.!text-purple-400]="sample.status === 'playing'"
+
+  <!-- PLAY BUTTON -->
+
+  <button
+    (click)="togglePlay()"
+    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg
+    text-zinc-400 group-hover:text-white transition-colors"
+    [class.!text-purple-400]="isPlaying()"
   >
-    @if (sample.status === 'playing') {
+
+    @if (isPlaying()) {
+
       <svg lucidePause class="w-5 h-5 fill-current"></svg>
+
     } @else {
+
       <svg lucidePlay class="w-5 h-5 fill-current translate-x-px"></svg>
+
     }
+
   </button>
 
-  <!-- Información del Sample -->
+  <!-- INFO -->
+
   <div class="min-w-0 flex-1">
-    <h3 
-      class="truncate text-sm font-medium text-zinc-200 group-hover:text-white transition-colors"
-      [class.!text-purple-300]="sample.status === 'playing'"
+
+    <h3
+      class="truncate text-sm font-medium text-zinc-200
+      group-hover:text-white transition-colors"
+      [class.!text-purple-300]="isPlaying()"
     >
       {{ sample.sampleName }}
     </h3>
 
-    <!-- Detalles Técnicos (Cambiado el createdAt por formato/duración tipo la imagen) -->
-    <div class="mt-0.5 flex items-center gap-1.5 text-xs font-mono tracking-wider text-zinc-500">
-      <span>{{ sample.outputFormat.toUpperCase() }}</span>
+    <div
+      class="mt-0.5 flex items-center gap-1.5 text-xs font-mono
+      tracking-wider text-zinc-500"
+    >
+
+      <span>
+        {{ sample.outputFormat.toUpperCase() }}
+      </span>
+
       <span class="text-zinc-700">•</span>
-      <span>{{ sample.duration }}s</span>
+
+      <span>
+        {{ sample.duration }}s
+      </span>
+
       <span class="text-zinc-700">•</span>
-      <span class="truncate text-[10px] uppercase bg-zinc-800/60 px-1.5 py-0.5 rounded text-zinc-400">
+
+      <span
+        class="truncate text-[10px] uppercase
+        bg-zinc-800/60 px-1.5 py-0.5 rounded text-zinc-400"
+      >
         {{ sample.modelVersion }}
       </span>
+
     </div>
+
   </div>
 
-  <!-- Forma de Onda (Waveform de la derecha) -->
-  <div class="flex items-center gap-0.75 h-6 shrink-0 opacity-40 group-hover:opacity-70 transition-opacity"
-       [class.!opacity-100]="sample.status === 'playing'">
-    <!-- Pequeña simulación de barras de audio que se iluminan si está sonando -->
-    <span class="gap-0.75 h-2 rounded-full" [class]="sample.status === 'playing' ? 'bg-purple-400' : 'bg-zinc-500'"></span>
-    <span class="gap-0.75 h-4 rounded-full" [class]="sample.status === 'playing' ? 'bg-purple-400' : 'bg-zinc-500'"></span>
-    <span class="gap-0.75 h-5 rounded-full" [class]="sample.status === 'playing' ? 'bg-purple-400' : 'bg-zinc-500'"></span>
-    <span class="gap-0.75 h-3 rounded-full" [class]="sample.status === 'playing' ? 'bg-purple-400' : 'bg-zinc-500'"></span>
-    <span class="gap-0.75 h-4 rounded-full" [class]="sample.status === 'playing' ? 'bg-purple-400' : 'bg-zinc-500'"></span>
-    <span class="gap-0.75 h-2 rounded-full" [class]="sample.status === 'playing' ? 'bg-purple-400' : 'bg-zinc-500'"></span>
+  <!-- WAVE -->
+
+  <div
+    class="flex items-end gap-1 h-6 shrink-0 opacity-40
+    group-hover:opacity-70 transition-opacity"
+    [class.!opacity-100]="isPlaying()"
+  >
+
+    <span
+      class="w-1 h-2 rounded-full"
+      [class]="isPlaying() ? 'bg-purple-400' : 'bg-zinc-500'"
+    ></span>
+
+    <span
+      class="w-1 h-4 rounded-full"
+      [class]="isPlaying() ? 'bg-purple-400' : 'bg-zinc-500'"
+    ></span>
+
+    <span
+      class="w-1 h-5 rounded-full"
+      [class]="isPlaying() ? 'bg-purple-400' : 'bg-zinc-500'"
+    ></span>
+
+    <span
+      class="w-1 h-3 rounded-full"
+      [class]="isPlaying() ? 'bg-purple-400' : 'bg-zinc-500'"
+    ></span>
+
+    <span
+      class="w-1 h-4 rounded-full"
+      [class]="isPlaying() ? 'bg-purple-400' : 'bg-zinc-500'"
+    ></span>
+
+    <span
+      class="w-1 h-2 rounded-full"
+      [class]="isPlaying() ? 'bg-purple-400' : 'bg-zinc-500'"
+    ></span>
+
   </div>
+
 </div>

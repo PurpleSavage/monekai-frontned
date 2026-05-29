@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, signal } from "@angular/core";
 import { SampleEntity } from "../../../domain/entities/sample.entity";
 import { LucidePlay } from "@lucide/angular";
 
@@ -10,5 +10,10 @@ import { LucidePlay } from "@lucide/angular";
 })
 export class SampleCardComponent {
   @Input({ required: true })
-  audio!: SampleEntity;
+  sample!: SampleEntity;
+  public isPlaying = signal(false);
+  
+  togglePlay() {
+    this.isPlaying.update(v => !v);
+  }
 }
