@@ -3,7 +3,10 @@ export abstract class ListenerEventsPort {
   /**
    * Inicializa la conexión SSE
    */
-  abstract connect(url?: string): void
+   abstract connect(
+     url: string ,
+     options?: EventSourceInit
+   ): void
 
   /**
    * Cierra la conexión SSE

@@ -8,4 +8,5 @@ import { SampleEntity } from "../../domain/entities/sample.entity";
 export abstract class SamplerPort {
   abstract generateSample(dto: CreateSampleRequestDTO): Observable<SampleGenerationHttpResponse>;
   abstract listSamples(dto: PaginatedRequestDTO): Observable<PaginatedResponseDTO<SampleEntity>>
+
 }

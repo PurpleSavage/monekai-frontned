@@ -5,6 +5,7 @@ import { EventSourceService } from "../../../infrastructure/sse/event-source.ser
 import { AudioStateService } from "../../../../../sampler/state-manager/audio-state.service";
 import { SampleEntity } from "../../../../../sampler/domain/entities/sample.entity";
 
+
 @Component({
   selector: 'app-notification-listener-wrapper',
   templateUrl: './notification-listener-wrapper.component.html',
@@ -18,10 +19,12 @@ export class NotificationListenerWrapperComponent implements OnInit, OnDestroy {
 
   private listenEventsUseCase =inject(ListenEventUseCase)
 
-  private audioStateService =inject(AudioStateService)
+  private audioStateService = inject(AudioStateService)
+
+
 
   ngOnInit(): void {
-    this.initEventListening()
+    this.initEventListening() 
     this.listenConnectionErrors()
   }
 
@@ -35,13 +38,13 @@ export class NotificationListenerWrapperComponent implements OnInit, OnDestroy {
    private initEventListening(): void {
    
      this.listenEventsUseCase.register({
-       'sample-ready': (
+       'sample_ready': (
          audio: SampleEntity
        ) => {
-   
+         console.log('sample_ready', audio)
          this.audioStateService.addAudio(audio)
        },
-       'sample-error': (
+       'sample_error': (
          error: {
            error:string
          }

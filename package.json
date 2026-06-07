@@ -25,7 +25,8 @@
     "dexie": "^4.4.2",
     "rxjs": "~7.8.0",
     "three": "^0.184.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "wavesurfer.js": "^7.12.7"
   },
   "devDependencies": {
     "@angular/build": "^21.2.6",

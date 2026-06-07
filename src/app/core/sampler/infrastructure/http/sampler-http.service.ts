@@ -14,7 +14,8 @@ import { toSampleEntity } from "../infra-mappers/to-sample-entity.mapper";
 @Injectable()
 export class SamplerHttpService implements SamplerPort {
   constructor(private http: HttpClient) { }
-  public generateSample(dto: CreateSampleRequestDTO):Observable<SampleGenerationHttpResponse> {
+  public generateSample(dto: CreateSampleRequestDTO): Observable<SampleGenerationHttpResponse> {
+    console.log(dto)
     return this.http.post<SampleGenerationHttpResponse>("/audio/create", dto);
   }
   public listSamples(dto: PaginatedRequestDTO): Observable<PaginatedResponseDTO<SampleEntity>> {
@@ -23,8 +24,9 @@ export class SamplerHttpService implements SamplerPort {
          .set('limit', dto.limit.toString());
     return this.http.get<PaginatedSampleResponseDTO>("/audio/samples", { params }).pipe(
       map((data) => {
-        const samples = data.data.map((item) => toSampleEntity(item))
-        const hasMore =(data.page * data.pageSize) < data.total;
+        const samplesFiltered = data.data.filter(sam=>sam.audioUrl!== null)
+        const samples = samplesFiltered.map((item) => toSampleEntity(item))
+        const hasMore = (data.page * data.pageSize) < data.total;
         return {
           data: samples,
           total: data.total,

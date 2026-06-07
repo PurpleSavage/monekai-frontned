@@ -12,55 +12,12 @@ import { SamplerPersistencePort } from "../ports/sampler-persistence.port";
 @Injectable()
 export class ListSamplesUseCase {
   constructor(
-    private samplerPersistenceService: SamplerPersistencePort,
-    private samplerHttpService: SamplerPort,
-    private metadataPersistenceService: MetadataPersistencePort
+    private samplerHttpService: SamplerPort
   ) { }
 
   public execute(dto: PaginatedRequestDTO): Observable<PaginatedResponseDTO<SampleEntity>> { 
-    return this.samplerPersistenceService.listSamples(dto).pipe(
-      take(1),
-      switchMap((localSamples: SampleEntity[]) => { 
-
-        // CASO 1: SÍ HAY DATOS LOCALES PARA ESTA PÁGINA
-        if (localSamples && localSamples.length > 0) {
-          return from(this.metadataPersistenceService.getMetadataFromOrigin('samples')).pipe(
-            map((metadata) => {
-              return {
-                data: localSamples,
-                total: metadata ? metadata.total : localSamples.length, 
-                page: dto.page,
-                pageSize: dto.limit,
-                hasMore:(dto.page * dto.limit) <(metadata ? metadata.total : localSamples.length)
-              };
-            })
-          );
-        }
-
-        //CASO 2: NO HAY LOCAL (O ES UNA PÁGINA NUEVA), VAMOS A LA API
-        return this.samplerHttpService.listSamples(dto).pipe(
-          switchMap((apiResponse: PaginatedResponseDTO<SampleEntity>) => {
-            
-            const updatedMetadata: MetadataPagedVO = {
-              origin: 'samples',
-              total: apiResponse.total, 
-           
-            };
-
-            // Guardamos los samples de la página actual en caché
-            this.samplerPersistenceService.saveSamples(apiResponse.data).subscribe({
-              error: err => console.error('Background samples cache save failed', err)
-            });
-
-  
-            this.metadataPersistenceService.saveMetadata(updatedMetadata).catch(
-              err => console.error('Background metadata cache update failed', err)
-            );
-
-            return of(apiResponse);
-          })
-        );
-      })
+    return this.samplerHttpService.listSamples(dto).pipe(
+      take(1) 
     );
   }
 }

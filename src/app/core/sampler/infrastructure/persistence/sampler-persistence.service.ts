@@ -15,7 +15,7 @@ export class SamplerPersistenceService implements SamplerPersistencePort {
    * Throws a LocalPersistenceError downstream if the operation fails.
    */
   public saveSamples(samples: SampleEntity[]): Observable<void> {
-    return defer(() => db.samples.bulkPut(samples)).pipe(
+    return defer(() => db.samplesEdited.bulkPut(samples)).pipe(
 
       map(() => undefined),
       catchError((error) => 
@@ -33,14 +33,14 @@ export class SamplerPersistenceService implements SamplerPersistencePort {
    * Returns a real-time Observable array of samples matching the pagination limits.
    * Emits new updates automatically whenever the database slice changes.
    */
-  public listSamples(dto: PaginatedRequestDTO): Observable<SampleEntity[]> {
+  public listSamplesEdited(dto: PaginatedRequestDTO): Observable<SampleEntity[]> {
     const { page, limit } = dto;
     const skip = (page - 1) * limit;
 
     // liveQuery observa los cambios reactivos de la BD y from lo adapta a RxJS
     return from(
       liveQuery(() => 
-        db.samples
+        db.samplesEdited
           .offset(skip)
           .limit(limit)
           .toArray()
@@ -51,6 +51,23 @@ export class SamplerPersistenceService implements SamplerPersistencePort {
           LocalPersistenceError.fromDexieError(
             error, 
             `Failed to retrieve paginated sample list for page ${page}`
+          )
+        )
+      )
+    );
+  }
+
+  public getLastEdition(): Observable<SampleEntity | null> {
+    return from(
+      db.samplesEdited.orderBy('id').last()
+    ).pipe(
+      map(sample => sample ?? null),
+  
+      catchError((error) =>
+        throwError(() =>
+          LocalPersistenceError.fromDexieError(
+            error,
+            'Failed to retrieve the last sample edition'
           )
         )
       )

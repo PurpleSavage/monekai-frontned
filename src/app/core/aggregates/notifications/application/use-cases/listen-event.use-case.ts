@@ -13,7 +13,11 @@ export class ListenEventUseCase {
 
   constructor(
     private listenerEventsService: ListenerEventsPort
-  ) {}
+  ) {
+    
+  }
+
+
 
   on<T>(nameEvent: string,callback: EventCallback<T>): void {
 

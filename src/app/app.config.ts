@@ -22,6 +22,7 @@ import { SamplerPersistencePort } from './core/sampler/application/ports/sampler
 import { SamplerPersistenceService } from './core/sampler/infrastructure/persistence/sampler-persistence.service';
 import { SamplerHttpService } from './core/sampler/infrastructure/http/sampler-http.service';
 import { SamplerPort } from './core/sampler/application/ports/sampler.port';
+import { GenerateSampleUseCase } from './core/sampler/application/use-cases/generate-sample.use-case';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,7 +38,7 @@ export const appConfig: ApplicationConfig = {
     ListSamplesUseCase,
     {provide: SamplerPersistencePort,useClass: SamplerPersistenceService},
     {provide: SamplerPort,useClass:SamplerHttpService},
-    { provide: AuthPort, useClass: AuthHttp },
+    {provide: AuthPort, useClass: AuthHttp },
     {provide:MetadataPersistencePort,useClass:MetadataPersistenceService}
   ],
 };

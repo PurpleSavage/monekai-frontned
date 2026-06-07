@@ -12,57 +12,90 @@ const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 export const refreshTokenInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
-) => { 
-  const getTokenUseCase = inject(GetNewTokenUseCase)
+) => {
+
+  const getTokenUseCase = inject(GetNewTokenUseCase);
   const authState = inject(AuthStateManager);
   const router = inject(Router);
+
   let authReq = req;
-  const currentToken = authState.getAccessToken(); 
+
+  const currentToken = authState.getAccessToken();
+
   if (currentToken) {
     authReq = req.clone({
-      setHeaders: { Authorization: `Bearer ${currentToken}` }
+      setHeaders: {
+        Authorization: `Bearer ${currentToken}`
+      }
     });
   }
 
-  //procesar la petición si es que hay un error 
   return next(authReq).pipe(
     catchError((error) => {
-      if (error instanceof HttpErrorResponse && error.status === 401 && !req.url.includes('/auth/refresh-token')) { 
-        // Si ya hay un refresco en curso, pausamos esta petición en la fila
+
+      if (
+        error instanceof HttpErrorResponse &&
+        error.status === 401 &&
+        !req.url.includes('/auth/refresh-token')
+      ) {
+
+        // Ya hay un refresh corriendo
         if (isRefreshing) {
           return refreshTokenSubject.pipe(
             filter(token => token !== null),
             take(1),
             switchMap((token) => {
-              // Reintentamos con el nuevo token obtenido por la otra petición
-              return next(req.clone({
-                setHeaders: { Authorization: `Bearer ${token}` }
-              }));
-          }))
+              return next(
+                req.clone({
+                  setHeaders: {
+                    Authorization: `Bearer ${token}`
+                  }
+                })
+              );
+            })
+          );
         }
 
         isRefreshing = true;
         refreshTokenSubject.next(null);
-        return getTokenUseCase.execute().pipe(
-          switchMap((response) => { 
-            isRefreshing = false;
-            refreshTokenSubject.next(response.accessToken);
 
-            authState.updateAccessToken(response.accessToken)
-            return next(req.clone({
-              setHeaders: { Authorization: `Bearer ${response.accessToken}` }
-            }));
-          }),
-          catchError((refreshErr) => { 
+        return getTokenUseCase.execute().pipe(
+
+          // ESTE catchError SOLO escucha errores del refresh
+          catchError((refreshErr) => {
+
+            console.log('ERROR REFRESH', refreshErr);
+
             isRefreshing = false;
+
             authState.setSession(null);
             router.navigate(['/auth/login']);
+
             return throwError(() => refreshErr);
+          }),
+
+          switchMap((response) => {
+
+            console.log('token refrescado', response.accessToken);
+
+            isRefreshing = false;
+
+            refreshTokenSubject.next(response.accessToken);
+
+            authState.updateAccessToken(response.accessToken);
+
+            return next(
+              req.clone({
+                setHeaders: {
+                  Authorization: `Bearer ${response.accessToken}`
+                }
+              })
+            );
           })
-        )
-        
+        );
       }
+
       return throwError(() => error);
     })
   );
-}
+};

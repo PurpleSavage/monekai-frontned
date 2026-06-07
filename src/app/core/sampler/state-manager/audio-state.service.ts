@@ -4,7 +4,7 @@ import { PaginatedResponseDTO } from "../../shared/common/application/dtos/respo
 
 @Injectable()
 export class AudioStateService {
-
+  public audioStateLoading = signal<boolean>(false)
   public audiosGenerated =signal<PaginatedResponseDTO<SampleEntity>>({
       data: [],
       total: 0,
@@ -15,11 +15,14 @@ export class AudioStateService {
 
   public audioSelected = signal<SampleEntity | null>(null);
 
-  selectAudio(audio: SampleEntity | null) {
+  public selectAudio(audio: SampleEntity | null) {
     this.audioSelected.set(audio);
   }
+  public deleteAudioSelected() { 
+    this.audioSelected.set(null)
+  }
 
-  appendAudios(
+  public appendAudios(
     data: PaginatedResponseDTO<SampleEntity>
   ) {
 
@@ -38,7 +41,7 @@ export class AudioStateService {
     }));
   }
 
-  resetAudios() {
+  public resetAudios() {
 
     this.audiosGenerated.set({
       data: [],
@@ -50,7 +53,7 @@ export class AudioStateService {
 
   }
 
-  deleteAudio(id: string) {
+  public deleteAudio(id: string) {
 
     this.audiosGenerated.update(prev => ({
       ...prev,
@@ -61,7 +64,7 @@ export class AudioStateService {
 
   }
 
-  addAudio(audio: SampleEntity) {
+  public addAudio(audio: SampleEntity) {
   
     this.audiosGenerated.update(prev => ({
   
@@ -71,5 +74,9 @@ export class AudioStateService {
   
     }));
   
+  }
+
+  public setLoading(loading: boolean) {
+    this.audioStateLoading.set(loading);
   }
 }

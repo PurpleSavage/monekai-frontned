@@ -4,19 +4,26 @@ import { OutputFormat, OutputFormatType } from "../../../domain/value-objects/ou
 import { ModelVersion, ModelVersionType } from "../../../domain/value-objects/model-version.vo";
 import { CreateSampleRequestDTO } from "../../../application/dtos/requests/create-sample-requet.dto";
 import { AuthStateManager } from "../../../../shared/auth/state-manager/auth-state.service";
+import { GenerateSampleUseCase } from "../../../application/use-cases/generate-sample.use-case";
+import { AudioStateService } from "../../../state-manager/audio-state.service";
 
 @Component({
   selector: 'app-prompt-input',
   templateUrl: './prompt-input.component.html',
   standalone: true,
   imports: [ReactiveFormsModule],
+  providers: [
+    GenerateSampleUseCase
+  ]
 })
 export class PromptInputComponent {
   public models = Object.values(ModelVersion)
   public formats = Object.values(OutputFormat)
   public authState = inject(AuthStateManager)
- 
+  public generateSampleUseCase = inject(GenerateSampleUseCase)
+  public audioStateService = inject(AudioStateService)
 
+  
   public createSongFromGroup = new FormGroup({
     prompt: new FormControl<string>('', {
       nonNullable: true,
@@ -54,7 +61,17 @@ export class PromptInputComponent {
       const requestPayload:CreateSampleRequestDTO = {
         ...rawValues,
         email: email
-      } 
+      }
+      this.generateSampleUseCase.execute(requestPayload)
+        .subscribe({
+          next: (data) => {
+            console.log('aqui hay data',data)
+            this.audioStateService.audioStateLoading.set(true)
+          },
+          error: (error) => {
+            console.error(error)
+          }
+        })
     }
     
   }
