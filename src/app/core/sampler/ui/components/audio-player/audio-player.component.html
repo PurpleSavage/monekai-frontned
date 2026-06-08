@@ -1,4 +1,4 @@
-<div class="w-full max-w-5xl rounded-xl bg-black px-6 py-4 text-white">
+<div class="w-full  rounded-xl bg-black px-6 py-4 text-white">
 
   <!-- Audio oculto -->
   <audio
@@ -7,24 +7,33 @@
     class="hidden">
   </audio>
 
-  <div class="flex items-center gap-6">
+  <div class="flex items-center gap-6  w-full">
 
     <!-- Controles -->
     <div class="flex items-center gap-4">
 
       <button
         class="text-white/70 hover:text-white transition">
-        ⏮
+          <svg lucideChevronFirst class="w-5 h-5 fill-current translate-x-px"></svg>
       </button>
 
       <button
-        class="h-12 w-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition">
-        ⏸
+        class="h-12 w-12 rounded-full text-white flex items-center 
+        justify-center hover:scale-105 transition">
+          @if (isPlaying()) {
+      
+            <svg lucidePause class="w-5 h-5 fill-current"></svg>
+      
+          } @else {
+      
+            <svg lucidePlay class="w-5 h-5 fill-current translate-x-px"></svg>
+      
+          }
       </button>
 
       <button
         class="text-white/70 hover:text-white transition">
-        ⏭
+          <svg lucideChevronLast class="w-5 h-5 fill-current translate-x-px"></svg>
       </button>
 
     </div>
@@ -50,25 +59,19 @@
 
     <!-- Volumen -->
     <div class="flex items-center gap-2 w-40">
-
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M11 5L6 9H3v6h3l5 4V5z" />
-      </svg>
-
+      @if(volume() === 'muted'){
+        <svg lucideVolumeX class="w-5 h-5 fill-current text-white"></svg>
+      }@else if(volume() === 'medium'){
+        <svg lucideVolume1class="w-5 h-5 fill-current text-white"></svg>
+      }@else if(volume() === 'high'){
+        <svg lucideVolume2 class="w-5 h-5 fill-current text-white"></svg>
+      }
       <input
         type="range"
+        (input)="handleVolumeChange($event)"
         min="0"
-        max="100"
-        value="100"
+        max="1"
+        step="0.01"
         class="w-full h-1 appearance-none bg-white/20 rounded-lg cursor-pointer">
     </div>
 

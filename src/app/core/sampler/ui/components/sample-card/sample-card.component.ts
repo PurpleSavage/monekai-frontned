@@ -1,13 +1,13 @@
 import { Component, computed, inject, Input} from "@angular/core";
 import { SampleEntity } from "../../../domain/entities/sample.entity";
-import { LucidePlay } from "@lucide/angular";
+import { LucidePause, LucidePlay } from "@lucide/angular";
 import { AudioStateService } from "../../../state-manager/audio-state.service";
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
 
 @Component({
   selector: 'app-sample-card',
   standalone: true,
-  imports: [LucidePlay],
+  imports: [LucidePlay,LucidePause],
   templateUrl: './sample-card.component.html',
   providers: []
 })
