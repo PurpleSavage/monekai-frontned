@@ -13,15 +13,22 @@ export class AudioStateService {
       hasMore: true,
     });
 
-  public audioSelected = signal<SampleEntity | null>(null);
+  public audioSelectedToListen = signal<{ isPlaying: boolean, audio: SampleEntity | null }>({
+    isPlaying: false,
+    audio: null,
+  });
 
-  public selectAudio(audio: SampleEntity | null) {
-    this.audioSelected.set(audio);
-  }
-  public deleteAudioSelected() { 
-    this.audioSelected.set(null)
-  }
 
+  public selectAudioToListen(data:{ isPlaying: boolean, audio: SampleEntity | null }) {
+    this.audioSelectedToListen.set(data);
+  }
+  public deleteAudioSelectedToListen() { 
+    this.audioSelectedToListen.set({
+      isPlaying: false,
+      audio: null,
+    })
+  }
+  
   public appendAudios(
     data: PaginatedResponseDTO<SampleEntity>
   ) {

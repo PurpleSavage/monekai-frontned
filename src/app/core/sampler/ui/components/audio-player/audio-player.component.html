@@ -1,0 +1,77 @@
+<div class="w-full max-w-5xl rounded-xl bg-black px-6 py-4 text-white">
+
+  <!-- Audio oculto -->
+  <audio
+    #audioPlayer
+    src="assets/audio.mp3"
+    class="hidden">
+  </audio>
+
+  <div class="flex items-center gap-6">
+
+    <!-- Controles -->
+    <div class="flex items-center gap-4">
+
+      <button
+        class="text-white/70 hover:text-white transition">
+        ⏮
+      </button>
+
+      <button
+        class="h-12 w-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition">
+        ⏸
+      </button>
+
+      <button
+        class="text-white/70 hover:text-white transition">
+        ⏭
+      </button>
+
+    </div>
+
+    <!-- Tiempo -->
+    <span class="text-sm text-white/60 min-w-12.5">
+      00:00
+    </span>
+
+    <!-- Barra progreso -->
+    <div class="flex-1">
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value="0"
+        class="w-full h-1 appearance-none bg-white/20 rounded-lg cursor-pointer">
+    </div>
+
+    <span class="text-sm text-white/60 min-w-12.5">
+      03:25
+    </span>
+
+    <!-- Volumen -->
+    <div class="flex items-center gap-2 w-40">
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M11 5L6 9H3v6h3l5 4V5z" />
+      </svg>
+
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value="100"
+        class="w-full h-1 appearance-none bg-white/20 rounded-lg cursor-pointer">
+    </div>
+
+  </div>
+
+</div>

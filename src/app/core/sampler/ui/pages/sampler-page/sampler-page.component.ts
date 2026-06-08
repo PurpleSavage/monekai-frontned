@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router} from "@angular/router";
 import { LucideLayersPlus, LucideSave, LucideSearch } from "@lucide/angular";
 import { LIST_MODE_PARAM, ListMode } from "../../ui-options/list-mode.options";
@@ -8,6 +8,8 @@ import { AudioEffectsPageComponent } from "../../components/audio-effects/audio-
 import { WaveSurferComponent } from "../../components/wave-surfer/wave-surfer.component";
 import { PromptInputComponent } from "../../components/prompt-imput/prompt-input.component";
 import { SamplePureListComponent } from "../../components/sample-pure-list/sample-pure-list.component";
+import { AudioPlayerComponent } from "../../components/audio-player/audio-player.component";
+import { AudioStateService } from "../../../state-manager/audio-state.service";
 
 
 
@@ -22,7 +24,8 @@ import { SamplePureListComponent } from "../../components/sample-pure-list/sampl
     AudioEffectsPageComponent,
     WaveSurferComponent,
     PromptInputComponent,
-    SamplePureListComponent
+    SamplePureListComponent,
+    AudioPlayerComponent
   ], 
   host: {
     class: 'block w-full h-full' 
@@ -32,12 +35,18 @@ export class SamplerPageComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  
+  private audioStateService = inject(AudioStateService)
   public isVisiblePromptComponent = signal<boolean>(false)
-  public listMode = signal<ListMode>(LIST_MODE_PARAM.listPure);
-  public settingsMode = signal<SettingsMode>(SETTINGS_MODE_PARAM.effects); 
-  public isCreateMode = signal<boolean>(false);
-  public queryParams = toSignal(this.route.queryParams);
+  public listMode = signal<ListMode>(LIST_MODE_PARAM.listPure)
+  public settingsMode = signal<SettingsMode>(SETTINGS_MODE_PARAM.effects);
+  public isCreateMode = signal<boolean>(false)
+  public queryParams = toSignal(this.route.queryParams)
+  
+  public isVisiblePlayerComponent = computed(() => { 
+    const visible = this.audioStateService.audioSelectedToListen()
+    return visible.audio ? true : false
+  })
+  
   
   ngOnInit(): void {
     this.initQueryParams();

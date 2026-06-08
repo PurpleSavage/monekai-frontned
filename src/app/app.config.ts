@@ -23,6 +23,7 @@ import { SamplerPersistenceService } from './core/sampler/infrastructure/persist
 import { SamplerHttpService } from './core/sampler/infrastructure/http/sampler-http.service';
 import { SamplerPort } from './core/sampler/application/ports/sampler.port';
 import { GenerateSampleUseCase } from './core/sampler/application/use-cases/generate-sample.use-case';
+import { AudioEditStateService } from './core/sampler/state-manager/audio-edit-state.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,6 +36,7 @@ export const appConfig: ApplicationConfig = {
     GetNewTokenUseCase,
     LoginWithGoogleUseCase,
     AudioStateService,
+    AudioEditStateService,
     ListSamplesUseCase,
     {provide: SamplerPersistencePort,useClass: SamplerPersistenceService},
     {provide: SamplerPort,useClass:SamplerHttpService},

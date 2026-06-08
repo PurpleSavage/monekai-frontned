@@ -1,14 +1,13 @@
 import { AfterViewInit, Component, effect, ElementRef, inject, OnDestroy, viewChild} from "@angular/core";
 import WaveSurfer from 'wavesurfer.js'
 import { GetLastSampleEditedUseCase } from "../../../application/use-cases/get-last-sample-edited.use-case";
-import { AudioStateService } from "../../../state-manager/audio-state.service";
+import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
 @Component({ 
   selector: 'app-wave-surfer',
   templateUrl: './wave-surfer.component.html',
   standalone: true,
   providers: [
     GetLastSampleEditedUseCase,
-    AudioStateService,
   ]
 })
 export class WaveSurferComponent implements AfterViewInit, OnDestroy {
@@ -18,15 +17,14 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
   private wave?: WaveSurfer;
 
   private getLastSampleEdited = inject(GetLastSampleEditedUseCase);
-  private audioStateService = inject(AudioStateService);
-
-  public audioSelected = this.audioStateService.audioSelected;
+  private audioEditStateService= inject(AudioEditStateService)
+  public audioSelected = this.audioEditStateService.audioSelectedToEdit;
 
   constructor() {
 
     effect(() => {
 
-      const audio = this.audioStateService.audioSelected();
+      const audio = this.audioEditStateService.audioSelectedToEdit();
       const waveform = this.waveformRef();
 
       if (!audio?.audioUrl || !waveform) {
@@ -51,7 +49,7 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
 
     this.getLastSampleEdited.execute().subscribe({
       next: sample => {
-        this.audioStateService.selectAudio(sample);
+        this.audioEditStateService.setAudioToEdit(sample);
       },
       error: console.error,
     });

@@ -7,24 +7,34 @@
 
   <!-- PLAY BUTTON -->
 
-  <button
-    (click)="togglePlay()"
-    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg
-    text-zinc-400 group-hover:text-white transition-colors"
-    [class.!text-purple-400]="isPlaying()"
-  >
-
-    @if (isPlaying()) {
-
-      <svg lucidePause class="w-5 h-5 fill-current"></svg>
-
-    } @else {
-
-      <svg lucidePlay class="w-5 h-5 fill-current translate-x-px"></svg>
-
-    }
-
-  </button>
+  <div class="flex items-center gap-4">
+    <button
+      (click)="togglePlay()"
+      class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg
+      text-zinc-400 group-hover:text-white transition-colors"
+      [class.!text-purple-400]="isPlaying()"
+    >
+  
+      @if (isPlaying()) {
+  
+        <svg lucidePause class="w-5 h-5 fill-current"></svg>
+  
+      } @else {
+  
+        <svg lucidePlay class="w-5 h-5 fill-current translate-x-px"></svg>
+  
+      }
+  
+    </button>
+    <button
+        (click)="selectAudio()"
+        class="opacity-0 group-hover:opacity-100 transition-opacity
+               text-xs text-purple-400"
+      >
+        Use
+      </button>
+  </div>
+  
 
   <!-- INFO -->
 

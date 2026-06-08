@@ -106,3 +106,10 @@
   class="absolute bottom-0 left-0 w-full z-40 transition-transform duration-300 ease-out ">
   <app-prompt-input></app-prompt-input>
 </div>
+
+<div
+  [class]="isVisiblePlayerComponent() ? 'translate-y-0' : 'translate-y-full'"
+  class="absolute bottom-0 left-0 w-full z-40 transition-transform duration-300 ease-out "
+>
+  <app-audio-player></app-audio-player>
+</div>
