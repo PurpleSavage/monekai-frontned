@@ -109,7 +109,18 @@
 
 <div
   [class]="isVisiblePlayerComponent() ? 'translate-y-0' : 'translate-y-full'"
-  class="absolute bottom-0 left-0 w-full z-40 transition-transform duration-300 ease-out "
+  class="absolute bottom-0 left-0 w-full 
+  z-40 transition-transform duration-300 ease-out "
 >
+  <div class="flex items-center justify-center pb-1">
+    <button 
+      type="button" 
+      (click)="setVisiblePlayerComponent(false)" 
+      class="text-white p-2 rounded-full hover:text-slate-300 
+      cursor-pointer bg-black border border-white/20"
+    >
+      <svg lucideChevronsDown class="w-5 h-5 fill-current translate-x-px"></svg>
+    </button>
+  </div>
   <app-audio-player></app-audio-player>
 </div>

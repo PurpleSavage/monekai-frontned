@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router} from "@angular/router";
-import { LucideLayersPlus, LucideSave, LucideSearch } from "@lucide/angular";
+import { LucideChevronsDown, LucideLayersPlus, LucideSave, LucideSearch } from "@lucide/angular";
 import { LIST_MODE_PARAM, ListMode } from "../../ui-options/list-mode.options";
 import { SETTINGS_MODE_PARAM, SettingsMode } from "../../ui-options/settins-mode.options";
 import { toSignal } from "@angular/core/rxjs-interop";
@@ -25,7 +25,8 @@ import { AudioStateService } from "../../../state-manager/audio-state.service";
     WaveSurferComponent,
     PromptInputComponent,
     SamplePureListComponent,
-    AudioPlayerComponent
+    AudioPlayerComponent,
+    LucideChevronsDown,
   ], 
   host: {
     class: 'block w-full h-full' 
@@ -96,4 +97,11 @@ export class SamplerPageComponent implements OnInit {
   public getListMode() {
     return this.listMode();
   }
-}
+  public setVisiblePlayerComponent(visible: boolean) {
+    this.audioStateService.selectAudioToListen({
+      isPlaying: false,
+      audio: null,
+    })
+  }
+  
+} 

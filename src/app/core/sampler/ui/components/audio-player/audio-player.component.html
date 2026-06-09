@@ -1,10 +1,14 @@
-<div class="w-full  rounded-xl bg-black px-6 py-4 text-white">
-
+<div class="w-full  rounded-xl bg-black px-6 py-4 text-white border-t border-white/20 ">
+  
   <!-- Audio oculto -->
   <audio
     #audioPlayer
     src="assets/audio.mp3"
-    class="hidden">
+    class="hidden"
+    (loadedmetadata)="onMetadataLoaded()"
+    (timeupdate)="onTimeUpdate()"
+    (ended)="onEnded()"
+  >
   </audio>
 
   <div class="flex items-center gap-6  w-full">
@@ -13,12 +17,14 @@
     <div class="flex items-center gap-4">
 
       <button
-        class="text-white/70 hover:text-white transition">
+        (click)="handleForward('back')"
+        class="text-white/70 hover:text-white transition cursor-pointer">
           <svg lucideChevronFirst class="w-5 h-5 fill-current translate-x-px"></svg>
       </button>
 
       <button
-        class="h-12 w-12 rounded-full text-white flex items-center 
+        (click)="togglePlay()"
+        class="h-12 w-12 rounded-full text-white flex items-center cursor-pointer
         justify-center hover:scale-105 transition">
           @if (isPlaying()) {
       
@@ -32,7 +38,8 @@
       </button>
 
       <button
-        class="text-white/70 hover:text-white transition">
+        (click)="handleForward('skip')"
+        class="text-white/70 hover:text-white transition cursor-pointer">
           <svg lucideChevronLast class="w-5 h-5 fill-current translate-x-px"></svg>
       </button>
 
@@ -40,39 +47,87 @@
 
     <!-- Tiempo -->
     <span class="text-sm text-white/60 min-w-12.5">
-      00:00
+      {{ formattedCurrentTime() }}
     </span>
 
     <!-- Barra progreso -->
-    <div class="flex-1">
+    <div class="relative flex-1">
+    
+      <!-- Barra base -->
+      <div class="h-1 w-full rounded-full bg-white/20">
+    
+        <!-- Progreso -->
+        <div
+          class="h-full rounded-full bg-purple-500"
+          [style.width.%]="progressPercentage()">
+        </div>
+    
+      </div>
+    
+      <!-- Thumb -->
+      <div
+        class="absolute top-1/2 h-3 w-3 rounded-full bg-purple-500
+               -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        [style.left.%]="progressPercentage()">
+      </div>
+    
+      <!-- Range invisible para mantener el drag nativo -->
       <input
         type="range"
         min="0"
-        max="100"
-        value="0"
-        class="w-full h-1 appearance-none bg-white/20 rounded-lg cursor-pointer">
+        [max]="totalTime()"
+        [value]="currentTime()"
+        (input)="seekAudio($event)"
+        class="absolute inset-0 h-full w-full cursor-pointer opacity-0">
+    
     </div>
-
     <span class="text-sm text-white/60 min-w-12.5">
-      03:25
+      {{ formattedTotalTime() }}
     </span>
 
     <!-- Volumen -->
     <div class="flex items-center gap-2 w-40">
-      @if(volume() === 'muted'){
+    
+      @if(volumeLevel() === 'muted'){
         <svg lucideVolumeX class="w-5 h-5 fill-current text-white"></svg>
-      }@else if(volume() === 'medium'){
-        <svg lucideVolume1class="w-5 h-5 fill-current text-white"></svg>
-      }@else if(volume() === 'high'){
+      } @else if(volumeLevel() === 'medium'){
+        <svg lucideVolume1 class="w-5 h-5 fill-current text-white"></svg>
+      } @else {
         <svg lucideVolume2 class="w-5 h-5 fill-current text-white"></svg>
       }
-      <input
-        type="range"
-        (input)="handleVolumeChange($event)"
-        min="0"
-        max="1"
-        step="0.01"
-        class="w-full h-1 appearance-none bg-white/20 rounded-lg cursor-pointer">
+    
+      <div class="relative flex-1">
+    
+        <!-- Barra base -->
+        <div class="h-1 w-full rounded-full bg-white/20">
+    
+          <!-- Progreso -->
+          <div
+            class="h-full rounded-full bg-purple-500"
+            [style.width.%]="volumePercentage()">
+          </div>
+    
+        </div>
+    
+        <!-- Thumb -->
+        <div
+          class="absolute top-1/2 h-3 w-3 rounded-full bg-purple-500
+                 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+          [style.left.%]="volumePercentage()">
+        </div>
+    
+        <!-- Slider invisible -->
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          [value]="volumeValue()"
+          (input)="handleVolumeChange($event)"
+          class="absolute inset-0 h-full w-full cursor-pointer opacity-0">
+    
+      </div>
+    
     </div>
 
   </div>

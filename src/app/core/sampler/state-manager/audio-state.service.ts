@@ -18,7 +18,12 @@ export class AudioStateService {
     audio: null,
   });
 
-
+  public changeStateIsPlaying(isPlaying:boolean) { 
+    this.audioSelectedToListen.update(prev => ({
+      ...prev,
+      isPlaying,
+    }));
+  }
   public selectAudioToListen(data:{ isPlaying: boolean, audio: SampleEntity | null }) {
     this.audioSelectedToListen.set(data);
   }
