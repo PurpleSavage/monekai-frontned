@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from "@angular/core";
+import { Component, computed, inject, OnDestroy, OnInit } from "@angular/core";
 import { ListenEventUseCase } from "../../../application/use-cases/listen-event.use-case";
 import { ListenerEventsPort } from "../../../application/ports/listener-events.port";
 import { EventSourceService } from "../../../infrastructure/sse/event-source.service";
@@ -21,7 +21,7 @@ export class NotificationListenerWrapperComponent implements OnInit, OnDestroy {
 
   private audioStateService = inject(AudioStateService)
 
-
+  protected sizeNotifications = computed(()=>this.audioStateService.audiosGenerated().data.length)
 
   ngOnInit(): void {
     this.initEventListening() 

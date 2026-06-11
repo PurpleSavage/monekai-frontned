@@ -1,13 +1,13 @@
 import { Component, computed, inject, Input} from "@angular/core";
 import { SampleEntity } from "../../../domain/entities/sample.entity";
-import { LucidePause, LucidePlay } from "@lucide/angular";
+import { LucidePause, LucidePlay, LucideSlidersHorizontal } from "@lucide/angular";
 import { AudioStateService } from "../../../state-manager/audio-state.service";
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
 
 @Component({
   selector: 'app-sample-card',
   standalone: true,
-  imports: [LucidePlay,LucidePause],
+  imports: [LucidePlay,LucidePause,LucideSlidersHorizontal],
   templateUrl: './sample-card.component.html',
   providers: []
 })
@@ -49,11 +49,10 @@ export class SampleCardComponent {
     }
   
     selectAudio() {
-  
+      console.log('este es el sample que se va a editar',this.sample)
       this.audioEditStateService.setAudioToEdit(
         this.sample
       );
-  
     }
 
 }

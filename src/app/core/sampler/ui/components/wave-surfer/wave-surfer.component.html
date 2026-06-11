@@ -1,4 +1,4 @@
-<div class="h-full w-full  bg-grid-gray relative overflow-hidden">
+<div class="h-full w-full flex items-center justify-center  bg-grid-gray relative overflow-hidden">
   @if (!audioSelected()?.audioUrl) {
     <div class="absolute inset-0 flex items-center justify-center">
       <p class="text-gray-500">
@@ -6,6 +6,5 @@
       </p>
     </div>
   }
-
-  <div #waveform></div>
+  <div #waveform class="w-full h-32 min-h-32"></div>
 </div>

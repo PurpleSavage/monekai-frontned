@@ -57,7 +57,9 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.wave?.destroy();
+    if (this.wave) { 
+      this.wave.destroy();
+    }
   }
 
 }
