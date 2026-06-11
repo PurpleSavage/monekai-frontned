@@ -21,7 +21,21 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
   public audioSelected = this.audioEditStateService.audioSelectedToEdit;
 
   constructor() {
+    this.effectAudioPlaying()
+    this.effectAudioSelectToEdit()
 
+  }
+  private effectAudioPlaying() { 
+    effect(() => { 
+      const isPlaying = this.audioEditStateService.audioSelectedToEditIsPalying();
+      if (isPlaying) {
+        this.wave?.play();
+      } else {
+        this.wave?.pause();
+      }
+    })
+  }
+  private effectAudioSelectToEdit() { 
     effect(() => {
 
       const audio = this.audioEditStateService.audioSelectedToEdit();
@@ -42,9 +56,7 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
       });
 
     });
-
   }
-
   ngAfterViewInit(): void {
 
     this.getLastSampleEdited.execute().subscribe({
@@ -55,7 +67,6 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
     });
 
   }
-
   ngOnDestroy(): void {
     if (this.wave) { 
       this.wave.destroy();

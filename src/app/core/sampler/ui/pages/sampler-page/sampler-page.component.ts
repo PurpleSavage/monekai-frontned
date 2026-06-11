@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router} from "@angular/router";
-import { LucideChevronsDown, LucideLayersPlus, LucideSave, LucideSearch } from "@lucide/angular";
+import { LucideChevronsDown, LucideLayersPlus, LucidePause, LucidePlay, LucideSave, LucideSearch } from "@lucide/angular";
 import { LIST_MODE_PARAM, ListMode } from "../../ui-options/list-mode.options";
 import { SETTINGS_MODE_PARAM, SettingsMode } from "../../ui-options/settins-mode.options";
 import { toSignal } from "@angular/core/rxjs-interop";
@@ -10,6 +10,7 @@ import { PromptInputComponent } from "../../components/prompt-imput/prompt-input
 import { SamplePureListComponent } from "../../components/sample-pure-list/sample-pure-list.component";
 import { AudioPlayerComponent } from "../../components/audio-player/audio-player.component";
 import { AudioStateService } from "../../../state-manager/audio-state.service";
+import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
 
 
 
@@ -27,6 +28,8 @@ import { AudioStateService } from "../../../state-manager/audio-state.service";
     SamplePureListComponent,
     AudioPlayerComponent,
     LucideChevronsDown,
+    LucidePlay,
+    LucidePause
   ], 
   host: {
     class: 'block w-full h-full' 
@@ -35,8 +38,8 @@ import { AudioStateService } from "../../../state-manager/audio-state.service";
 export class SamplerPageComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
   private audioStateService = inject(AudioStateService)
+  private audioEditStateService= inject(AudioEditStateService)
   public isVisiblePromptComponent = signal<boolean>(false)
   public listMode = signal<ListMode>(LIST_MODE_PARAM.listPure)
   public settingsMode = signal<SettingsMode>(SETTINGS_MODE_PARAM.effects);
@@ -47,7 +50,14 @@ export class SamplerPageComponent implements OnInit {
     const visible = this.audioStateService.audioSelectedToListen()
     return visible.audio ? true : false
   })
-  
+
+  protected nameCurrentSample = computed(() => { 
+    const audio = this.audioEditStateService.audioSelectedToEdit()
+    return audio ? audio.sampleName : ''
+  })
+  protected isPlayingAudioSelectedToEdit = computed(() => {
+    return this.audioEditStateService.audioSelectedToEditIsPalying()
+  })
   
   ngOnInit(): void {
     this.initQueryParams();
@@ -102,6 +112,10 @@ export class SamplerPageComponent implements OnInit {
       isPlaying: false,
       audio: null,
     })
+  }
+  public playAudioEdit() { 
+    const isPlaying = this.audioEditStateService.audioSelectedToEditIsPalying()
+    this.audioEditStateService.setAudioToEditIsPlaying(!isPlaying)
   }
   
 } 

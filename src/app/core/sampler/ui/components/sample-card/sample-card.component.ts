@@ -48,8 +48,9 @@ export class SampleCardComponent {
   
     }
   
-    selectAudio() {
-      console.log('este es el sample que se va a editar',this.sample)
+    selectAudioToEdit() {
+      console.log('este es el sample que se va a editar', this.sample)
+      this.audioEditStateService.setAudioToEditIsPlaying(false)
       this.audioEditStateService.setAudioToEdit(
         this.sample
       );
