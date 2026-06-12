@@ -19,7 +19,7 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
   private getLastSampleEdited = inject(GetLastSampleEditedUseCase);
   private audioEditStateService= inject(AudioEditStateService)
   public audioSelected = this.audioEditStateService.audioSelectedToEdit;
-
+  
   constructor() {
     this.effectAudioPlaying()
     this.effectAudioSelectToEdit()
@@ -57,6 +57,7 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
 
     });
   }
+  
   ngAfterViewInit(): void {
 
     this.getLastSampleEdited.execute().subscribe({

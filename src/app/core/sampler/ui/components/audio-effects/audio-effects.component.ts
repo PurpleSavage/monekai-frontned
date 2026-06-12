@@ -1,5 +1,6 @@
-import { Component, signal } from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
 
 @Component({
   selector: 'app-audio-effects',
@@ -8,16 +9,46 @@ import { FormsModule } from "@angular/forms";
   imports:[FormsModule]
 })
 export class AudioEffectsPageComponent {
-  reverb = signal<number>(64);
-  slowPitch = signal<number>(-12);
-  saturation = signal<number>(12);
-  delay = signal<number>(30);
-  lowPass = signal<number>(12500);
-  highPass = signal<number>(40);
-  gain = signal<number>(-3);
-  reverse = signal<boolean>(true)
- 
+  protected audioEditState = inject(AudioEditStateService)
+  protected reverbValue=computed(() => this.audioEditState.effects().reverb)
+  protected slowPitchValue=computed(() => this.audioEditState.effects().slowPitch)
+  protected saturationValue=computed(() => this.audioEditState.effects().saturation)
+  protected delayValue=computed(() => this.audioEditState.effects().delay)
+  protected lowPassValue=computed(() => this.audioEditState.effects().lowPass)
+  protected highPassValue=computed(() => this.audioEditState.effects().highPass)
+  protected gainValue=computed(() => this.audioEditState.effects().gain)
+  protected reverseValue=computed(() => this.audioEditState.effects().reverse)
+
+  setReverb(value: number) {
+    this.audioEditState.setReverb(value)
+  }
+  
+  setSlowPitch(value: number) {
+    this.audioEditState.setSlowPitch(value)
+  }
+  
+  setSaturation(value: number) {
+    this.audioEditState.setSaturation(value)
+  }
+  
+  setDelay(value: number) {
+    this.audioEditState.setDelay(value)
+  }
+  
+  setLowPass(value: number) {
+    this.audioEditState.setLowPass(value)
+  }
+  
+  setHighPass(value: number) {
+    this.audioEditState.setHighPass(value)
+  }
+  
+  setGain(value: number) {
+    this.audioEditState.setGain(value)
+  }
+  
   toggleReverse(): void {
-    this.reverse.update(state => !state);
+    const prevState= this.reverseValue()
+    this.audioEditState.setReverse(!prevState)
   }
 }
