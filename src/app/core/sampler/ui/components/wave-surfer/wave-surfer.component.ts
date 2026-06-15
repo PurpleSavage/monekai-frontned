@@ -2,6 +2,7 @@ import { AfterViewInit, Component, effect, ElementRef, inject, OnDestroy, viewCh
 import WaveSurfer from 'wavesurfer.js'
 import { GetLastSampleEditedUseCase } from "../../../application/use-cases/get-last-sample-edited.use-case";
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
+import { AudioEffectsEngineService } from "../../../application/monekai-engine/audio-effects-engine.service";
 @Component({ 
   selector: 'app-wave-surfer',
   templateUrl: './wave-surfer.component.html',
@@ -12,18 +13,27 @@ import { AudioEditStateService } from "../../../state-manager/audio-edit-state.s
 })
 export class WaveSurferComponent implements AfterViewInit, OnDestroy {
 
-  waveformRef = viewChild<ElementRef<HTMLDivElement>>('waveform');
+  waveformRef = viewChild<ElementRef<HTMLDivElement>>('waveform')
 
   private wave?: WaveSurfer;
 
-  private getLastSampleEdited = inject(GetLastSampleEditedUseCase);
-  private audioEditStateService= inject(AudioEditStateService)
-  public audioSelected = this.audioEditStateService.audioSelectedToEdit;
+  private getLastSampleEdited = inject(GetLastSampleEditedUseCase)
+  private audioEditStateService = inject(AudioEditStateService)
+  private audioEffectsEngine = inject(AudioEffectsEngineService)
+  public audioSelected = this.audioEditStateService.audioSelectedToEdit
   
   constructor() {
     this.effectAudioPlaying()
     this.effectAudioSelectToEdit()
-
+    this.effectAdioEffects()
+  }
+  private effectAdioEffects() { 
+    effect(() => { 
+      const fx = this.audioEditStateService.effects()
+      this.audioEffectsEngine.setReverb(fx.reverb)
+      this.audioEffectsEngine.setGain(fx.gain)
+      this.audioEffectsEngine.setDelay(fx.delay)
+    })
   }
   private effectAudioPlaying() { 
     effect(() => { 
@@ -37,25 +47,24 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
   }
   private effectAudioSelectToEdit() { 
     effect(() => {
-
       const audio = this.audioEditStateService.audioSelectedToEdit();
       const waveform = this.waveformRef();
-
       if (!audio?.audioUrl || !waveform) {
-        this.wave?.destroy();
-        return;
+        this.wave?.destroy()
+        return
       }
-
       this.wave?.destroy();
-
       this.wave = WaveSurfer.create({
         container: waveform.nativeElement,
         waveColor: '#E8E8E8',
         progressColor: '#9F05FF',
         url: audio.audioUrl,
-      });
-
-    });
+      })
+      const mediaElement = this.wave?.getMediaElement()
+      if (mediaElement) {
+        this.audioEffectsEngine.setMediaElement(mediaElement)
+      }
+    })
   }
   
   ngAfterViewInit(): void {

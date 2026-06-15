@@ -1,7 +1,16 @@
 import {  Injectable, signal } from "@angular/core";
 import { SampleEntity } from "../domain/entities/sample.entity";
 import { SampleEffectsRequestDto } from "../application/dtos/requests/sample-effects-request.dto";
-
+const DEFAULT_EFFECTS: SampleEffectsRequestDto = {
+  reverb: 64,
+  slowPitch: -12,
+  saturation: 12,
+  delay: 30,
+  lowPass: 12500,
+  highPass: 40,
+  gain: -3,
+  reverse: true,
+};
 @Injectable()
 export class AudioEditStateService { 
   public audioSelectedToEdit = signal<SampleEntity | null>(null)
@@ -46,5 +55,11 @@ export class AudioEditStateService {
   
   public setAudioToEdit(audio:SampleEntity | null) { 
     this.audioSelectedToEdit.set(audio)
+  }
+
+  public resetEffects() {
+    this.effects.set({
+      ...DEFAULT_EFFECTS
+    });
   }
 }
