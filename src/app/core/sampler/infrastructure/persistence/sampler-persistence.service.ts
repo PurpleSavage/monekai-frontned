@@ -10,6 +10,21 @@ import { liveQuery } from "dexie";
 @Injectable()
 export class SamplerPersistenceService implements SamplerPersistencePort {
 
+
+  public saveSample(sample: SampleEntity): Observable<void> {
+    return defer(() => db.samplesEdited.put(sample)).pipe(
+      map(() => undefined),
+      catchError((error) => 
+        throwError(() => 
+          LocalPersistenceError.fromDexieError(
+            error, 
+            'Failed to save audio sample chunk safely into local storage'
+          )
+        )
+      )
+    )
+  }
+
   /**
    * Saves incoming chunks incrementally and returns an Observable<void>.
    * Throws a LocalPersistenceError downstream if the operation fails.

@@ -6,4 +6,5 @@ export abstract class  SamplerPersistencePort {
   abstract saveSamples(samples: SampleEntity[]): Observable<void>
   abstract listSamplesEdited(dto: PaginatedRequestDTO): Observable<SampleEntity[]>
   abstract getLastEdition(): Observable<SampleEntity | null>
+  abstract saveSample(sample: SampleEntity): Observable<void>
 }

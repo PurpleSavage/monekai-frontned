@@ -1,0 +1,8 @@
+<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">  
+  <div [ngClass]="className">
+    <div class="w-full py-1 px-4 border-b border-white/20">
+      <p class="font-mono text-lg font-semibold">{{title}}</p>
+    </div>
+    <ng-content></ng-content>
+  </div>
+</div>

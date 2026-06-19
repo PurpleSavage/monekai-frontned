@@ -24,6 +24,7 @@ import { SamplerHttpService } from './core/sampler/infrastructure/http/sampler-h
 import { SamplerPort } from './core/sampler/application/ports/sampler.port';
 import { GenerateSampleUseCase } from './core/sampler/application/use-cases/generate-sample.use-case';
 import { AudioEditStateService } from './core/sampler/state-manager/audio-edit-state.service';
+import { SaveSampleUseCase } from './core/sampler/application/use-cases/save-sample.use-case';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,6 +39,7 @@ export const appConfig: ApplicationConfig = {
     AudioStateService,
     AudioEditStateService,
     ListSamplesUseCase,
+    SaveSampleUseCase,
     {provide: SamplerPersistencePort,useClass: SamplerPersistenceService},
     {provide: SamplerPort,useClass:SamplerHttpService},
     {provide: AuthPort, useClass: AuthHttp },
