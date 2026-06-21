@@ -11,6 +11,7 @@ import { SamplePureListComponent } from "../../components/sample-pure-list/sampl
 import { AudioPlayerComponent } from "../../components/audio-player/audio-player.component";
 import { AudioStateService } from "../../../state-manager/audio-state.service";
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
+import { ToasterComponent } from "../../../../shared/common/ui/components/toaster/toaster.component";
 
 
 
@@ -29,7 +30,8 @@ import { AudioEditStateService } from "../../../state-manager/audio-edit-state.s
     AudioPlayerComponent,
     LucideChevronsDown,
     LucidePlay,
-    LucidePause
+    LucidePause,
+    ToasterComponent
   ], 
   host: {
     class: 'block w-full h-full' 

@@ -16,7 +16,7 @@ export class AudioEditStateService {
   public audioSelectedToEdit = signal<SampleEntity | null>(null)
   public audioSelectedToEditIsPalying = signal<boolean>(false)
   public effects = signal<SampleEffectsRequestDto>({
-    reverb:64,
+    reverb:0,
     slowPitch: -12,
     saturation: 12,
     delay: 30,

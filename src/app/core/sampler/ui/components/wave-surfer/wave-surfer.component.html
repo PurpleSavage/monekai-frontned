@@ -1,10 +1,21 @@
-<div class="h-full w-full flex items-center justify-center  bg-grid-gray relative overflow-hidden">
-  @if (!audioSelected()?.audioUrl) {
-    <div class="absolute inset-0 flex items-center justify-center">
-      <p class="text-gray-500">
-        No sample available to display.
-      </p>
-    </div>
-  }
-  <div #waveform class="w-full h-32 min-h-32"></div>
+<div class="h-full w-full flex items-center justify-center bg-grid-gray relative overflow-hidden">
+  
+  <div 
+    class="absolute inset-0 pointer-events-none transition-[background] duration-200 ease-out"
+    [style.background]="reverbBackground()"
+  ></div>
+
+  <div class="w-full h-32 min-h-32 relative z-10 px-4">
+    
+    @if (!audioSelected()?.audioUrl) {
+      <div class="absolute inset-0 flex items-center justify-center rounded-lg">
+        <p class="text-gray-400 font-medium text-sm">
+          No sample available to display.
+        </p>
+      </div>
+    }
+    
+    <div #waveform class="w-full h-full"></div>
+  </div>
+
 </div>

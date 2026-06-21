@@ -2,7 +2,12 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { BaseModalComponent } from "../base-modal/base-modal.component";
 
 
-export type ModalAction = 'CLOSE-DO' | 'CLOSE-CONTINUE'
+
+export const ModalAction = {
+  CLOSE_DO: 'CLOSE-DO',
+  CLOSE_CONTINUE: 'CLOSE-CONTINUE',
+} as const 
+export type ModalActionType = typeof ModalAction[keyof typeof ModalAction]
 @Component({
   selector: "app-warning-modal",
   templateUrl: "./warning-modal.component.html",
@@ -14,9 +19,9 @@ export class WarningModalComponent {
   @Input() textCloseContinue:string=""
   @Input() title: string = "";
   @Input() message: string = "";
-  @Output() accepted: EventEmitter<ModalAction> = new EventEmitter<ModalAction>()
+  @Output() accepted: EventEmitter<ModalActionType> = new EventEmitter<ModalActionType>()
 
-  accept(action:ModalAction ) {
+  accept(action:ModalActionType ) {
      this.accepted.emit(action);
    }
 }

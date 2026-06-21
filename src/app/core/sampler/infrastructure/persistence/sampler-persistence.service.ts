@@ -10,6 +10,18 @@ import { liveQuery } from "dexie";
 @Injectable()
 export class SamplerPersistenceService implements SamplerPersistencePort {
 
+  public findSampleEditedById(id: string): Observable<SampleEntity | null> {
+    return from(db.samplesEdited.get(id)).pipe(
+      map((sample) => sample ?? null),
+      catchError((error) =>
+        throwError(() =>
+          LocalPersistenceError.fromDexieError(
+            error,
+            `Failed to retrieve edited sample with ID: ${id} from local storage`
+          )
+        ))
+    )
+  }
 
   public saveSample(sample: SampleEntity): Observable<void> {
     return defer(() => db.samplesEdited.put(sample)).pipe(

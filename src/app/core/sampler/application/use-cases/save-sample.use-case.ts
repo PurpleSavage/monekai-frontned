@@ -8,6 +8,7 @@ export class SaveSampleUseCase {
   constructor(private persistence: SamplerPersistencePort) {}
 
   execute(sample: SampleEntity): Observable<void> {
+    
     return this.persistence.saveSample(sample)
   }
 }
