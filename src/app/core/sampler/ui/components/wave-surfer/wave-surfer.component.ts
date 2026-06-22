@@ -31,7 +31,7 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
     const centerOpacity = factor * 0.15
     const edgeOpacity = factor * 0.65  
     return `radial-gradient(circle, rgba(${pinkRGB}, ${centerOpacity}) 0%, rgba(${pinkRGB}, ${edgeOpacity}) 100%)`
-  });
+  })
   constructor() {
     this.effectAudioPlaying()
     this.effectAudioSelectToEdit()
@@ -43,6 +43,7 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
       this.audioEffectsEngine.setReverb(fx.reverb)
       this.audioEffectsEngine.setGain(fx.gain)
       this.audioEffectsEngine.setDelay(fx.delay)
+       this.audioEffectsEngine.setSaturation(fx.saturation)
     })
   }
   private effectAudioPlaying() { 

@@ -2,9 +2,9 @@ import {  Injectable, signal } from "@angular/core";
 import { SampleEntity } from "../domain/entities/sample.entity";
 import { SampleEffectsRequestDto } from "../application/dtos/requests/sample-effects-request.dto";
 const DEFAULT_EFFECTS: SampleEffectsRequestDto = {
-  reverb: 64,
+  reverb: 0,
   slowPitch: -12,
-  saturation: 12,
+  saturation: 0,
   delay: 30,
   lowPass: 12500,
   highPass: 40,
@@ -15,16 +15,7 @@ const DEFAULT_EFFECTS: SampleEffectsRequestDto = {
 export class AudioEditStateService { 
   public audioSelectedToEdit = signal<SampleEntity | null>(null)
   public audioSelectedToEditIsPalying = signal<boolean>(false)
-  public effects = signal<SampleEffectsRequestDto>({
-    reverb:0,
-    slowPitch: -12,
-    saturation: 12,
-    delay: 30,
-    lowPass: 12500,
-    highPass:40,
-    gain: -3,
-    reverse: true,
-  })
+  public effects = signal<SampleEffectsRequestDto>({...DEFAULT_EFFECTS })
   public setAudioToEditIsPlaying(isPlaying: boolean) {
     this.audioSelectedToEditIsPalying.set(isPlaying)
   }
