@@ -12,11 +12,16 @@ export class AudioEffectsEngineService {
   private delayNode = this.audioContext.createDelay()
   private saturationNode = this.audioContext.createWaveShaper()
   private source?: MediaElementAudioSourceNode
+  private lowPassFilter = this.audioContext.createBiquadFilter()
+  private highPassFilter = this.audioContext.createBiquadFilter()
 
+  
   constructor() {
     this.convolver.buffer = this.createImpulseResponse(3, 2)
     this.saturationNode.curve = this.createSaturationCurve(0)
     this.saturationNode.oversample = '4x'
+    this.lowPassFilter.type = 'lowpass'
+    this.highPassFilter.type = 'highpass'
   }
   private createImpulseResponse(
     duration: number,
@@ -66,6 +71,13 @@ export class AudioEffectsEngineService {
       await this.audioContext.resume()
     }
   }
+  setSlowPitch(semitones: number) {
+    if (!this.source) return
+      const mediaElement = this.source.mediaElement
+      mediaElement.preservesPitch = false 
+      const rate = Math.pow(2, semitones / 12)
+      mediaElement.playbackRate = rate
+  }
   resetNodes() { 
     this.gainNode.disconnect()
     this.delayNode.disconnect()
@@ -73,6 +85,8 @@ export class AudioEffectsEngineService {
     this.dryGain.disconnect()
     this.wetGain.disconnect()
     this.saturationNode.disconnect()
+    this.lowPassFilter.disconnect()
+    this.highPassFilter.disconnect()
   }
   setMediaElement(mediaElement: HTMLMediaElement) {
     if (this.source) {
@@ -83,7 +97,9 @@ export class AudioEffectsEngineService {
     this.source =this.audioContext.createMediaElementSource(mediaElement)
     this.source.connect(this.gainNode)
     this.gainNode.connect(this.saturationNode)
-    this.saturationNode.connect(this.delayNode)
+    this.saturationNode.connect(this.highPassFilter)
+    this.highPassFilter.connect(this.lowPassFilter) 
+    this.lowPassFilter.connect(this.delayNode)
     this.delayNode.connect(this.dryGain)
     this.delayNode.connect(this.convolver)
     this.convolver.connect(this.wetGain)
@@ -109,6 +125,16 @@ export class AudioEffectsEngineService {
   setSaturation(value: number) {
     const amount = (value / 100) * 50 
     this.saturationNode.curve = this.createSaturationCurve(amount)
+  }
+ 
+  setHighPass(frequency: number) {
+    this.highPassFilter.frequency.value = frequency
+  }
+  setLowPass(frequency: number) {
+    this.lowPassFilter.frequency.value = frequency
+  }
+  setReverse(value: boolean) {
+    
   }
   
 }

@@ -43,7 +43,11 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
       this.audioEffectsEngine.setReverb(fx.reverb)
       this.audioEffectsEngine.setGain(fx.gain)
       this.audioEffectsEngine.setDelay(fx.delay)
-       this.audioEffectsEngine.setSaturation(fx.saturation)
+      this.audioEffectsEngine.setSaturation(fx.saturation)
+      this.audioEffectsEngine.setSlowPitch(fx.slowPitch)
+      //TODO:  reverse
+      this.audioEffectsEngine.setHighPass(fx.highPass)
+      this.audioEffectsEngine.setLowPass(fx.lowPass)
     })
   }
   private effectAudioPlaying() { 
