@@ -1,9 +1,10 @@
 import Dexie, { EntityTable } from "dexie";
-import { SampleEntity } from "../../../../sampler/domain/entities/sample.entity";
+
 import { MetadataPagedVO } from "../../domain/value-objects/metadata-paged.vo";
+import { SampleEditedEntity } from "../../../../sampler/domain/entities/sample-edited.entity";
 
 const db = new Dexie('MonekaiDb') as Dexie & {
-  samplesEdited: EntityTable<SampleEntity, 'id'>;
+  samplesEdited: EntityTable<SampleEditedEntity, 'id'>;
   metadata: EntityTable<MetadataPagedVO, 'origin'>;
 }
 db.version(1).stores({

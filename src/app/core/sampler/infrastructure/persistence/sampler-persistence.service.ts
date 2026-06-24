@@ -6,11 +6,12 @@ import { SampleEntity } from "../../domain/entities/sample.entity";
 import { LocalPersistenceError } from "../../../shared/common/infrastructure/persisitence-error/local-persistence.error";
 import { catchError, defer, from, map, Observable, throwError } from "rxjs";
 import { liveQuery } from "dexie";
+import { SampleEditedEntity } from "../../domain/entities/sample-edited.entity";
 
 @Injectable()
 export class SamplerPersistenceService implements SamplerPersistencePort {
 
-  public findSampleEditedById(id: string): Observable<SampleEntity | null> {
+  public findSampleEditedById(id: string): Observable<SampleEditedEntity | null> {
     return from(db.samplesEdited.get(id)).pipe(
       map((sample) => sample ?? null),
       catchError((error) =>
@@ -23,7 +24,7 @@ export class SamplerPersistenceService implements SamplerPersistencePort {
     )
   }
 
-  public saveSample(sample: SampleEntity): Observable<void> {
+  public saveSample(sample: SampleEditedEntity): Observable<void> {
     return defer(() => db.samplesEdited.put(sample)).pipe(
       map(() => undefined),
       catchError((error) => 
@@ -41,7 +42,7 @@ export class SamplerPersistenceService implements SamplerPersistencePort {
    * Saves incoming chunks incrementally and returns an Observable<void>.
    * Throws a LocalPersistenceError downstream if the operation fails.
    */
-  public saveSamples(samples: SampleEntity[]): Observable<void> {
+  public saveSamples(samples: SampleEditedEntity[]): Observable<void> {
     return defer(() => db.samplesEdited.bulkPut(samples)).pipe(
 
       map(() => undefined),
@@ -60,7 +61,7 @@ export class SamplerPersistenceService implements SamplerPersistencePort {
    * Returns a real-time Observable array of samples matching the pagination limits.
    * Emits new updates automatically whenever the database slice changes.
    */
-  public listSamplesEdited(dto: PaginatedRequestDTO): Observable<SampleEntity[]> {
+  public listSamplesEdited(dto: PaginatedRequestDTO): Observable<SampleEditedEntity[]> {
     const { page, limit } = dto;
     const skip = (page - 1) * limit;
 
@@ -84,7 +85,7 @@ export class SamplerPersistenceService implements SamplerPersistencePort {
     );
   }
 
-  public getLastEdition(): Observable<SampleEntity | null> {
+  public getLastEdition(): Observable<SampleEditedEntity | null> {
     return from(
       db.samplesEdited.orderBy('id').last()
     ).pipe(

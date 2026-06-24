@@ -70,16 +70,16 @@ export class SampleCardComponent {
   */
   acceptEdit(action: ModalActionType) { 
     if (action === ModalAction.CLOSE_DO) {
-      const prevSample = this.audioEditStateService.audioSelectedToEdit()
-      if (!prevSample) {
+      const prevSampleEdited = this.audioEditStateService.getSampleEdited()
+      if (!prevSampleEdited) {
         this.openModalWarning.set(false)
         return
       }
-      this.saveSampleUseCase.execute(prevSample)
+      this.saveSampleUseCase.execute(prevSampleEdited)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           error: (error) => {
-            console.error(error)
+            console.error(error) 
           },
         })
     }
@@ -94,16 +94,13 @@ export class SampleCardComponent {
   */
   selectAudioToEdit() {
     this.audioEditStateService.setAudioToEditIsPlaying(false)
-    if (!this.audioEditStateService.audioSelectedToEdit()) {
+    const prevSample = this.audioEditStateService.getSampleEdited()
+    if (!prevSample) {
+       this.openModalWarning.set(false)
       this.audioEditStateService.setAudioToEdit(this.sample)
       return 
     }
-    const prevSample = this.audioEditStateService.audioSelectedToEdit()
-    if (!prevSample) {
-      this.openModalWarning.set(false)
-      return
-    }
-    this.checkSampleChangesUseCase.execute(prevSample, this.sample)
+    this.checkSampleChangesUseCase.execute(prevSample)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (result) => {
