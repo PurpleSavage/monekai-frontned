@@ -1,144 +1,145 @@
-<div class="w-full h-full min-h-0  grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+<app-observer-changes>
+  <div class="w-full h-full min-h-0  grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+    
+    <div class="lg:col-span-2 bg-[#0A0A0A] gap-3 border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
+      
+      <div class=" border-b border-white/10 pb-3">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-sm font-bold tracking-wider uppercase text-zinc-400">Sampler</p>
+         
+        </div>
+        <div class="flex items-center">
+          <ul class="flex gap-4 items-center flex-1">
+            <li>
+              <button 
+                (click)="setSettingsMode('EFFECTS')"
+                [class]="settingsMode() === 'EFFECTS' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+                class="cursor-pointer text-sm">
+                Effects
+              </button>
+            </li>
+            <li>
+              <button 
+                (click)="setSettingsMode('CLIPPER')"
+                [class]="settingsMode() === 'CLIPPER' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+                class="cursor-pointer text-sm">
+                Clipper
+              </button>
+            </li>
+          </ul>
+          <div class="flex items-center gap-3">
+            <button class="flex items-center gap-2 text-white font-medium text-sm
+              bg-purple-500 hover:bg-purple-400 px-2 rounded-md py-1 transition-colors cursor-pointer">
+              <svg lucideSave class="w-4 h-4"></svg>Save to cloud
+            </button>
+            <button 
+              (click)="setVisiblePromptComponent(!isVisiblePromptComponent())"
+              class="flex items-center gap-2 text-white font-medium text-sm
+              bg-purple-500 hover:bg-purple-400 px-2 rounded-md py-1 transition-colors cursor-pointer">
+              <svg lucideLayersPlus class="w-4 h-4"></svg>{{ isVisiblePromptComponent() ? 'Close text field' : 'Open text field' }}
+            </button>
+          </div> 
+        </div>
+      </div>
   
-  <div class="lg:col-span-2 bg-[#0A0A0A] gap-3 border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
-    
-    <div class=" border-b border-white/10 pb-3">
+      <div class=" overflow-y-auto  text-zinc-400 pr-1 pt-5 ">
+        @if (settingsMode() === 'EFFECTS') {
+          <app-audio-effects/>
+        } @else if (settingsMode() === 'CLIPPER') {
+          <div>✂️ Visualizador del Clipper</div>
+        }
+      </div>
+      <div class="flex items-center justify-center gap-4">
+        @if(nameCurrentSample()!==''){
+          <button type="button" (click)="playAudioEdit()" 
+            class="text-white cursor-pointer hover:text-slate-400 transition-colors">
+            @if(isPlayingAudioSelectedToEdit()){
+              <svg lucidePause class="w-4 h-4"></svg>
+            } @else {
+              <svg lucidePlay class="w-4 h-4"></svg>
+            }
+          </button>
+          <p class=" flex items-center justify-center text-zinc-400 text-xs gap-2
+            font-semibold font-mono">song name: <span class="text-purple-500"> {{nameCurrentSample()}}</span></p>
+        }
+      </div>
+      <app-wave-surfer class="flex-1 "/>
+    </div>
+  
+    <div class="lg:col-span-1 bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
+      
       <div class="flex items-center justify-between mb-3">
-        <p class="text-sm font-bold tracking-wider uppercase text-zinc-400">Sampler</p>
-       
-      </div>
-      <div class="flex items-center">
-        <ul class="flex gap-4 items-center flex-1">
-          <li>
-            <button 
-              (click)="setSettingsMode('EFFECTS')"
-              [class]="settingsMode() === 'EFFECTS' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
-              class="cursor-pointer text-sm">
-              Effects
-            </button>
-          </li>
-          <li>
-            <button 
-              (click)="setSettingsMode('CLIPPER')"
-              [class]="settingsMode() === 'CLIPPER' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
-              class="cursor-pointer text-sm">
-              Clipper
-            </button>
-          </li>
-        </ul>
-        <div class="flex items-center gap-3">
-          <button class="flex items-center gap-2 text-white font-medium text-sm
-            bg-purple-500 hover:bg-purple-400 px-2 rounded-md py-1 transition-colors cursor-pointer">
-            <svg lucideSave class="w-4 h-4"></svg>Save to cloud
-          </button>
-          <button 
-            (click)="setVisiblePromptComponent(!isVisiblePromptComponent())"
-            class="flex items-center gap-2 text-white font-medium text-sm
-            bg-purple-500 hover:bg-purple-400 px-2 rounded-md py-1 transition-colors cursor-pointer">
-            <svg lucideLayersPlus class="w-4 h-4"></svg>{{ isVisiblePromptComponent() ? 'Close text field' : 'Open text field' }}
-          </button>
-        </div> 
-      </div>
-    </div>
-
-    <div class=" overflow-y-auto  text-zinc-400 pr-1 pt-5 ">
-      @if (settingsMode() === 'EFFECTS') {
-        <app-audio-effects/>
-      } @else if (settingsMode() === 'CLIPPER') {
-        <div>✂️ Visualizador del Clipper</div>
-      }
-    </div>
-    <div class="flex items-center justify-center gap-4">
-      @if(nameCurrentSample()!==''){
-        <button type="button" (click)="playAudioEdit()" 
-          class="text-white cursor-pointer hover:text-slate-400 transition-colors">
-          @if(isPlayingAudioSelectedToEdit()){
-            <svg lucidePause class="w-4 h-4"></svg>
-          } @else {
-            <svg lucidePlay class="w-4 h-4"></svg>
-          }
+        <p class="text-sm font-bold tracking-wider uppercase text-zinc-400">Library</p>
+        <button class="text-zinc-400 hover:text-white cursor-pointer transition-colors">
+          <svg lucideSearch class="w-4 h-4"></svg>
         </button>
-        <p class=" flex items-center justify-center text-zinc-400 text-xs gap-2
-          font-semibold font-mono">song name: <span class="text-purple-500"> {{nameCurrentSample()}}</span></p>
-      }
+      </div>
+  
+      <ul class="flex items-center gap-4 border-b border-white/10 pb-3 mb-4 text-sm">
+        <li>
+          <button 
+            (click)="setListMode('PURE')"
+            [class]="listMode() === 'PURE' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+            class="cursor-pointer">
+            Pure
+          </button>
+        </li>
+        <li>
+          <button 
+            (click)="setListMode('SAVED')"
+            [class]="listMode() === 'SAVED' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+            class="cursor-pointer">
+            Saved
+          </button>
+        </li>
+        <li>
+          <button 
+            (click)="setListMode('UNSAVED')"
+            [class]="listMode() === 'UNSAVED' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
+            class="cursor-pointer">
+            Unsaved
+          </button>
+        </li>
+      </ul>
+  
+      <div class="flex-1 overflow-y-auto min-h-0 pr-1 text-zinc-400">
+        @if (listMode() === 'PURE') {
+          <app-sample-pure-list></app-sample-pure-list>
+        } @else if (listMode() === 'SAVED') {
+          <div>📦 Lista Saved Samples</div>
+        } @else if (listMode() === 'UNSAVED') {
+          <div>⚠️ Lista Unsaved Samples</div>
+        }
+      </div>
+      
     </div>
-    <app-wave-surfer class="flex-1 "/>
+  
   </div>
-
-  <div class="lg:col-span-1 bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 flex flex-col h-full min-h-0">
-    
-    <div class="flex items-center justify-between mb-3">
-      <p class="text-sm font-bold tracking-wider uppercase text-zinc-400">Library</p>
-      <button class="text-zinc-400 hover:text-white cursor-pointer transition-colors">
-        <svg lucideSearch class="w-4 h-4"></svg>
+  
+  <div 
+    [class]="isVisiblePromptComponent() ? 'translate-y-0' : 'translate-y-full'"
+    class="absolute bottom-0 left-0 w-full z-40 transition-transform duration-300 ease-out ">
+    <app-prompt-input></app-prompt-input>
+  </div>
+  
+  <div
+    [class]="isVisiblePlayerComponent() ? 'translate-y-0' : 'translate-y-full'"
+    class="absolute bottom-0 left-0 w-full 
+    z-40 transition-transform duration-300 ease-out "
+  >
+    <div class="flex items-center justify-center pb-1">
+      <button 
+        type="button" 
+        (click)="setVisiblePlayerComponent(false)" 
+        class="text-white p-2 rounded-full hover:text-slate-300 
+        cursor-pointer bg-black border border-white/20"
+      >
+        <svg lucideChevronsDown class="w-5 h-5 fill-current translate-x-px"></svg>
       </button>
     </div>
-
-    <ul class="flex items-center gap-4 border-b border-white/10 pb-3 mb-4 text-sm">
-      <li>
-        <button 
-          (click)="setListMode('PURE')"
-          [class]="listMode() === 'PURE' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
-          class="cursor-pointer">
-          Pure
-        </button>
-      </li>
-      <li>
-        <button 
-          (click)="setListMode('SAVED')"
-          [class]="listMode() === 'SAVED' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
-          class="cursor-pointer">
-          Saved
-        </button>
-      </li>
-      <li>
-        <button 
-          (click)="setListMode('UNSAVED')"
-          [class]="listMode() === 'UNSAVED' ? 'text-white underline underline-offset-4 decoration-2 font-medium' : 'text-zinc-400 hover:text-white transition-colors'"
-          class="cursor-pointer">
-          Unsaved
-        </button>
-      </li>
-    </ul>
-
-    <div class="flex-1 overflow-y-auto min-h-0 pr-1 text-zinc-400">
-      @if (listMode() === 'PURE') {
-        <app-sample-pure-list></app-sample-pure-list>
-      } @else if (listMode() === 'SAVED') {
-        <div>📦 Lista Saved Samples</div>
-      } @else if (listMode() === 'UNSAVED') {
-        <div>⚠️ Lista Unsaved Samples</div>
-      }
-    </div>
-    
+    <app-audio-player></app-audio-player>
   </div>
-
-</div>
-
-<div 
-  [class]="isVisiblePromptComponent() ? 'translate-y-0' : 'translate-y-full'"
-  class="absolute bottom-0 left-0 w-full z-40 transition-transform duration-300 ease-out ">
-  <app-prompt-input></app-prompt-input>
-</div>
-
-<div
-  [class]="isVisiblePlayerComponent() ? 'translate-y-0' : 'translate-y-full'"
-  class="absolute bottom-0 left-0 w-full 
-  z-40 transition-transform duration-300 ease-out "
->
-  <div class="flex items-center justify-center pb-1">
-    <button 
-      type="button" 
-      (click)="setVisiblePlayerComponent(false)" 
-      class="text-white p-2 rounded-full hover:text-slate-300 
-      cursor-pointer bg-black border border-white/20"
-    >
-      <svg lucideChevronsDown class="w-5 h-5 fill-current translate-x-px"></svg>
-    </button>
-  </div>
-  <app-audio-player></app-audio-player>
-</div>
-
+</app-observer-changes>
 
 <app-toaster 
   position="top-center" 

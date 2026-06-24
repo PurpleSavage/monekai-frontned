@@ -116,12 +116,3 @@
   </div>
 
 </div>
-@if(openModalWarning()) {
-  <app-warning-modal 
-    title="Warning" 
-    message="You are about to edit a sample that is currently playing. "
-    textCloseDo="Save and Continue"
-    textCloseContinue="Continue"
-    (accepted)="acceptEdit($event)"
-  ></app-warning-modal>
-}

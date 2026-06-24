@@ -3,16 +3,11 @@ import { SampleEntity } from "../../../domain/entities/sample.entity";
 import { LucidePause, LucidePlay, LucideSlidersHorizontal } from "@lucide/angular";
 import { AudioStateService } from "../../../state-manager/audio-state.service";
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
-import { ModalAction, ModalActionType, WarningModalComponent } from "../../../../shared/common/ui/components/warning-modal/warning-modal.component";
-import { SaveSampleUseCase } from "../../../application/use-cases/save-sample.use-case";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { CheckSampleChangesUseCase } from "../../../application/use-cases/check-sample-changes.use-case";
-import { toast } from 'ngx-sonner'
-import { LocalPersistenceError } from "../../../../shared/common/infrastructure/persisitence-error/local-persistence.error";
 @Component({
   selector: 'app-sample-card',
   standalone: true,
-  imports: [LucidePlay,LucidePause,LucideSlidersHorizontal, WarningModalComponent],
+  imports: [LucidePlay,LucidePause,LucideSlidersHorizontal],
   templateUrl: './sample-card.component.html',
   providers: [
     CheckSampleChangesUseCase
@@ -24,9 +19,7 @@ export class SampleCardComponent {
   
   private audioStateService = inject(AudioStateService)
   private audioEditStateService = inject(AudioEditStateService)
-  private saveSampleUseCase = inject(SaveSampleUseCase)
-  private destroyRef = inject(DestroyRef)
-  private checkSampleChangesUseCase = inject(CheckSampleChangesUseCase)
+ 
   protected openModalWarning = signal<boolean>(false)
   
   public isPlaying = computed(() => {
@@ -64,29 +57,8 @@ export class SampleCardComponent {
         isPlaying: true,
       });
   }
-  /*
-    esta función sirve para escuchar el evento disparado por el modal, posee dos acciones una que solo 
-    continua sin guardar cabios y otra que continua pero guarda los cambios en indexed db
-  */
-  acceptEdit(action: ModalActionType) { 
-    if (action === ModalAction.CLOSE_DO) {
-      const prevSampleEdited = this.audioEditStateService.getSampleEdited()
-      if (!prevSampleEdited) {
-        this.openModalWarning.set(false)
-        return
-      }
-      this.saveSampleUseCase.execute(prevSampleEdited)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          error: (error) => {
-            console.error(error) 
-          },
-        })
-    }
-    this.audioEditStateService.resetEffects()
-    this.audioEditStateService.setAudioToEdit(this.sample)
-    this.openModalWarning.set(false)
-  }
+  
+ 
 
   /*
   Esta función se encarga de seleccionar el audio para editar y verificar si hay cambios en el audio previo
@@ -94,31 +66,7 @@ export class SampleCardComponent {
   */
   selectAudioToEdit() {
     this.audioEditStateService.setAudioToEditIsPlaying(false)
-    const prevSample = this.audioEditStateService.getSampleEdited()
-    if (!prevSample) {
-       this.openModalWarning.set(false)
-      this.audioEditStateService.setAudioToEdit(this.sample)
-      return 
-    }
-    this.checkSampleChangesUseCase.execute(prevSample)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (result) => {
-          if (result && result.isChange) {
-            this.openWarningModal()
-          } else {
-            this.audioEditStateService.setAudioToEdit(this.sample)
-            this.openModalWarning.set(false)
-          }
-        },
-        error: (error) => {
-          if (error instanceof LocalPersistenceError) { 
-            toast.error('An error has occurred', {
-              description: error.message
-            })
-          }
-          console.error(error)
-        },
-      })
+    this.audioEditStateService.setAudioToEdit(this.sample)
+    
   }
 }

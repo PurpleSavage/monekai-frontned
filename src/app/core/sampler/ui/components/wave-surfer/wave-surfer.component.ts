@@ -20,6 +20,14 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
   
   public audioSelected = this.audioEditStateService.audioSelectedToEdit
   
+  protected reverse = computed(() => {
+    return this.audioEditStateService.effects().reverse
+  })
+
+  protected audioSelectedToEditURL = computed(() => {
+    return this.audioEditStateService.audioSelectedToEdit()?.audioUrl
+  })
+  
   protected reverbBackground = computed(() => {
     if (!this.audioSelected()?.audioUrl) return 'transparent'
     const fx = this.audioEditStateService.effects()
@@ -30,12 +38,19 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
     const factor = reverb / 100;
     const centerOpacity = factor * 0.15
     const edgeOpacity = factor * 0.65  
-    return `radial-gradient(circle, rgba(${pinkRGB}, ${centerOpacity}) 0%, rgba(${pinkRGB}, ${edgeOpacity}) 100%)`
+    return `radial-gradient(
+      circle,
+      rgba(${pinkRGB}, 
+      ${centerOpacity}) 0%, 
+      rgba(${pinkRGB}, 
+      ${edgeOpacity}) 100%
+    )`
   })
   constructor() {
     this.effectAudioPlaying()
     this.effectAudioSelectToEdit()
     this.effectAdioEffects()
+    this.effectReverse()
   }
   private effectAdioEffects() { 
     effect(() => { 
@@ -45,15 +60,41 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
       this.audioEffectsEngine.setDelay(fx.delay)
       this.audioEffectsEngine.setSaturation(fx.saturation)
       this.audioEffectsEngine.setSlowPitch(fx.slowPitch)
-      //TODO:  reverse
       this.audioEffectsEngine.setHighPass(fx.highPass)
       this.audioEffectsEngine.setLowPass(fx.lowPass)
     })
+  }
+  private effectReverse() {
+    effect(() => {
+      const url =this.audioSelectedToEditURL()
+      const reverse =this.reverse()
+      if (!url || !this.wave) {
+        return
+      }
+      this.loadAudio(url, reverse)
+    })
+  }
+  private async loadAudio(url: string,reverse: boolean) { 
+    if (!this.wave) {
+       return
+    }
+    const currentTime = this.wave.getCurrentTime()
+    const wasPlaying = this.wave.isPlaying()
+    const finalUrl = await this.audioEffectsEngine.getAudioUrl(url, reverse)
+    await this.wave.load(finalUrl)
+    if (currentTime > 0) {
+      this.wave.setTime(currentTime)
+    }
+    if (wasPlaying) {
+      await this.wave.play()
+    }
+
   }
   private effectAudioPlaying() { 
     effect(() => { 
       const isPlaying = this.audioEditStateService.audioSelectedToEditIsPalying()
       if (isPlaying) {
+        console.log(isPlaying)
         this.wave?.play()
       } else {
         this.wave?.pause()

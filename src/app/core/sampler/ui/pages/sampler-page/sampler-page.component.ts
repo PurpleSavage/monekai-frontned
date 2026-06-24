@@ -12,6 +12,8 @@ import { AudioPlayerComponent } from "../../components/audio-player/audio-player
 import { AudioStateService } from "../../../state-manager/audio-state.service";
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
 import { ToasterComponent } from "../../../../shared/common/ui/components/toaster/toaster.component";
+import { ObserverChangesComponent } from "../../wrappers/observer-changes/observer-changes.component";
+import { AudioEffectsEngineService } from "../../../application/monekai-engine/audio-effects-engine.service";
 
 
 
@@ -31,20 +33,22 @@ import { ToasterComponent } from "../../../../shared/common/ui/components/toaste
     LucideChevronsDown,
     LucidePlay,
     LucidePause,
-    ToasterComponent
+    ToasterComponent,
+    ObserverChangesComponent
   ], 
   host: {
     class: 'block w-full h-full' 
   }
 })
 export class SamplerPageComponent implements OnInit {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  private router = inject(Router)
+  private route = inject(ActivatedRoute)
   private audioStateService = inject(AudioStateService)
-  private audioEditStateService= inject(AudioEditStateService)
+  private audioEditStateService = inject(AudioEditStateService)
+  private audioEffectsEngine = inject(AudioEffectsEngineService)
   public isVisiblePromptComponent = signal<boolean>(false)
   public listMode = signal<ListMode>(LIST_MODE_PARAM.listPure)
-  public settingsMode = signal<SettingsMode>(SETTINGS_MODE_PARAM.effects);
+  public settingsMode = signal<SettingsMode>(SETTINGS_MODE_PARAM.effects)
   public isCreateMode = signal<boolean>(false)
   public queryParams = toSignal(this.route.queryParams)
   
@@ -115,7 +119,8 @@ export class SamplerPageComponent implements OnInit {
       audio: null,
     })
   }
-  public playAudioEdit() { 
+  public async playAudioEdit() { 
+    await this.audioEffectsEngine.resume()
     const isPlaying = this.audioEditStateService.audioSelectedToEditIsPalying()
     this.audioEditStateService.setAudioToEditIsPlaying(!isPlaying)
   }
