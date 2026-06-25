@@ -17,16 +17,22 @@ export class AudioEditStateService {
   public audioSelectedToEdit = signal<SampleEntity | null>(null)
   public audioSelectedToEditIsPalying = signal<boolean>(false)
   public effects = signal<SampleEffectsRequestDto>({ ...DEFAULT_EFFECTS })
-
+  public reverseAudio = signal<Blob | null>(null)
   public getSampleEdited(): SampleEditedEntity | null {
     const sample = this.audioSelectedToEdit()
     if(!sample) return null
     return {
       ...sample,
       effects: this.effects(),
+      blobUrlModify: this.reverseAudio(),
     }
   }
-  
+  public setBlobreverseAudio(blob: Blob | null) { 
+    this.reverseAudio.set(blob)
+  }
+  public setEffects(effects: SampleEffectsRequestDto) {
+    this.effects.set(effects)
+  }
   public setAudioToEditIsPlaying(isPlaying: boolean) {
     this.audioSelectedToEditIsPalying.set(isPlaying)
   }

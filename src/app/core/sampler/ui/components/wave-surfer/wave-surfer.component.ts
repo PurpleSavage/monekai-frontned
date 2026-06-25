@@ -3,6 +3,7 @@ import WaveSurfer from 'wavesurfer.js'
 import { GetLastSampleEditedUseCase } from "../../../application/use-cases/get-last-sample-edited.use-case";
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
 import { AudioEffectsEngineService } from "../../../application/monekai-engine/audio-effects-engine.service";
+import { fromEntityToDto} from "../../../application/dtos/requests/sample-effects-request.dto";
 @Component({ 
   selector: 'app-wave-surfer',
   templateUrl: './wave-surfer.component.html',
@@ -127,7 +128,13 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
 
     this.getLastSampleEdited.execute().subscribe({
       next: sample => {
-        this.audioEditStateService.setAudioToEdit(sample);
+        if(!sample) return
+        const { effects, blobUrlModify, ...sampleEntity } = sample
+        if(!effects) return
+        this.audioEditStateService.setAudioToEdit(sampleEntity)
+        this.audioEditStateService.setBlobreverseAudio(blobUrlModify)
+        const effectsDto = fromEntityToDto(effects)
+        this.audioEditStateService.setEffects(effectsDto)
       },
       error: console.error,
     });

@@ -1,8 +1,9 @@
 
-import { Component, DestroyRef, effect, inject, OnDestroy } from "@angular/core"
+import { Component, DestroyRef, effect, inject, OnDestroy, untracked } from "@angular/core"
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service"
 import { SaveSampleUseCase } from "../../../application/use-cases/save-sample.use-case"
 import { SampleEditedEntity } from "../../../domain/entities/sample-edited.entity"
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop"
 
 @Component({
   selector: "app-observer-changes",
@@ -10,9 +11,9 @@ import { SampleEditedEntity } from "../../../domain/entities/sample-edited.entit
   standalone:true
 })
 export class ObserverChangesComponent implements OnDestroy{
-
+    private readonly destroyRef = inject(DestroyRef)
   private readonly audioEditStateService =inject(AudioEditStateService)
-
+  
   private readonly saveSampleUseCase =inject(SaveSampleUseCase)
 
   private saveTimeoutId?: ReturnType<typeof setTimeout>
@@ -26,22 +27,17 @@ export class ObserverChangesComponent implements OnDestroy{
   }
 
   private observeChanges(): void {
-
     effect(() => {
-
       // Dependencia reactiva
       this.audioEditStateService.effects()
-
-      const sampleEdited =this.audioEditStateService.getSampleEdited()
-
-      if (!sampleEdited) {
-        return
-      }
-
-      this.scheduleSave(sampleEdited)
-
-    });
-
+      untracked(() => {
+        const sampleEdited = this.audioEditStateService.getSampleEdited()
+        if (!sampleEdited) {
+          return
+        }
+        this.scheduleSave(sampleEdited)
+      })
+    })
   }
 
   private scheduleSave(
@@ -54,6 +50,7 @@ export class ObserverChangesComponent implements OnDestroy{
 
       this.saveSampleUseCase
         .execute(sampleEdited)
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           error: (error) => {
             console.error(

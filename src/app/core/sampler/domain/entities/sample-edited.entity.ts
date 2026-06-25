@@ -1,6 +1,7 @@
-import { SampleEffects } from "./bucket-effects.entity";
+import { SampleEffects } from "./sample-effects.entity";
 import { SampleEntity } from "./sample.entity";
 
 export interface SampleEditedEntity extends SampleEntity {
-  effects:SampleEffects | null
+  effects: SampleEffects | null
+  blobUrlModify:Blob | null
 }

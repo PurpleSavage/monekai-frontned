@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 
 @Injectable({
   providedIn: 'root',
 })
-export class AudioEffectsEngineService {
+export class AudioEffectsEngineService implements OnDestroy{
   private audioContext = new AudioContext()
   
   private originalBuffer: AudioBuffer | null = null
@@ -211,7 +211,13 @@ export class AudioEffectsEngineService {
     const arrayBuffer = await response.arrayBuffer()
     this.originalBuffer  = await this.audioContext.decodeAudioData(arrayBuffer)
     this.originalUrlLoaded = url
-    this.reversedBlobUrl = null 
+    this.revokeReversedUrl()
+  }
+  private revokeReversedUrl(): void {
+    if (this.reversedBlobUrl) {
+      URL.revokeObjectURL(this.reversedBlobUrl)
+      this.reversedBlobUrl = null
+    }
   }
   public async getAudioUrl(
     url: string,
@@ -228,5 +234,9 @@ export class AudioEffectsEngineService {
     const blob = this.audioBufferToWavBlob(reversedBuffer)
     this.reversedBlobUrl = URL.createObjectURL(blob)
     return this.reversedBlobUrl
+  }
+  ngOnDestroy(): void {
+    this.revokeReversedUrl()
+    this.audioContext.close()
   }
 }
