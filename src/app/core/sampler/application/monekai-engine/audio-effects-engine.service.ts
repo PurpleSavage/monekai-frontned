@@ -1,4 +1,5 @@
 import { Injectable, OnDestroy } from "@angular/core";
+import { LocalURL } from "../../domain/value-objects/local-url.vo";
 
 @Injectable({
   providedIn: 'root',
@@ -215,7 +216,7 @@ export class AudioEffectsEngineService implements OnDestroy{
   }
   private revokeReversedUrl(): void {
     if (this.reversedBlobUrl) {
-      URL.revokeObjectURL(this.reversedBlobUrl)
+      LocalURL.revokeUrl(this.reversedBlobUrl)
       this.reversedBlobUrl = null
     }
   }
@@ -232,11 +233,12 @@ export class AudioEffectsEngineService implements OnDestroy{
     }
     const reversedBuffer = this.reverseBuffer(this.originalBuffer!)
     const blob = this.audioBufferToWavBlob(reversedBuffer)
-    this.reversedBlobUrl = URL.createObjectURL(blob)
+    this.reversedBlobUrl =LocalURL.buildUrl(blob) 
     return this.reversedBlobUrl
   }
   ngOnDestroy(): void {
     this.revokeReversedUrl()
     this.audioContext.close()
   }
+  
 }

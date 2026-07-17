@@ -14,7 +14,7 @@ const DEFAULT_EFFECTS: SampleEffectsRequestDto = {
 }
 @Injectable()
 export class AudioEditStateService { 
-  public audioSelectedToEdit = signal<SampleEntity | null>(null)
+  public audioSelectedToEdit = signal<SampleEntity| SampleEditedEntity | null>(null)
   public audioSelectedToEditIsPalying = signal<boolean>(false)
   public effects = signal<SampleEffectsRequestDto>({ ...DEFAULT_EFFECTS })
   public reverseAudio = signal<Blob | null>(null)

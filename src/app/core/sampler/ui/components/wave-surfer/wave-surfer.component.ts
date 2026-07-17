@@ -4,6 +4,9 @@ import { GetLastSampleEditedUseCase } from "../../../application/use-cases/get-l
 import { AudioEditStateService } from "../../../state-manager/audio-edit-state.service";
 import { AudioEffectsEngineService } from "../../../application/monekai-engine/audio-effects-engine.service";
 import { fromEntityToDto} from "../../../application/dtos/requests/sample-effects-request.dto";
+import { SampleEditedEntity } from "../../../domain/entities/sample-edited.entity";
+import { SampleEntity } from "../../../domain/entities/sample.entity";
+import { LocalURL } from "../../../domain/value-objects/local-url.vo";
 @Component({ 
   selector: 'app-wave-surfer',
   templateUrl: './wave-surfer.component.html',
@@ -102,6 +105,12 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
       }
     })
   }
+  private getAudioUrl(audio: SampleEntity | SampleEditedEntity): string | null {
+    if ('blobUrlModify' in audio && audio.blobUrlModify) {
+      return LocalURL.buildUrl(audio.blobUrlModify);
+    }
+    return audio.audioUrl ?? null;
+  }
   private effectAudioSelectToEdit() { 
     effect(() => {
       const audio = this.audioEditStateService.audioSelectedToEdit();
@@ -110,12 +119,17 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
         this.wave?.destroy()
         return
       }
+      const url = this.getAudioUrl(audio)
+      if (!url) {
+        this.wave?.destroy()
+        return;
+      }
       this.wave?.destroy();
       this.wave = WaveSurfer.create({
         container: waveform.nativeElement,
         waveColor: '#E8E8E8',
         progressColor: '#9F05FF',
-        url: audio.audioUrl,
+        url,
       })
       const mediaElement = this.wave?.getMediaElement()
       if (mediaElement) {
@@ -129,9 +143,9 @@ export class WaveSurferComponent implements AfterViewInit, OnDestroy {
     this.getLastSampleEdited.execute().subscribe({
       next: sample => {
         if(!sample) return
-        const { effects, blobUrlModify, ...sampleEntity } = sample
+        const { effects, blobUrlModify} = sample
         if(!effects) return
-        this.audioEditStateService.setAudioToEdit(sampleEntity)
+        this.audioEditStateService.setAudioToEdit(sample)
         this.audioEditStateService.setBlobreverseAudio(blobUrlModify)
         const effectsDto = fromEntityToDto(effects)
         this.audioEditStateService.setEffects(effectsDto)
