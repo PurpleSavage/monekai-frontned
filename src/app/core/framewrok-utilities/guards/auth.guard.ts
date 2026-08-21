@@ -41,7 +41,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   return getProfileUseCase.execute().pipe(
     map((sessionData) => {
       authState.setSession(sessionData);
-      authState.setLoading(false); // 💡 Se ejecuta con éxito 200
+      authState.setLoading(false); 
       return true; 
     }),
     catchError((err) => {
@@ -49,7 +49,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       
       // Si la cookie expiró o el backend dio error, limpiamos todo
       authState.setSession(null);
-      authState.setLoading(false); // 💡 Se ejecuta si hay error (Equivalente al finally)
+      authState.setLoading(false); 
       
       // Limpiar también el storage corrupto o expirado para que no vuelva a entrar aquí
       localStorage.removeItem('user-data'); 

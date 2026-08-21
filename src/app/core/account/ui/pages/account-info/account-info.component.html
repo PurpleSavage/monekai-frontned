@@ -1,0 +1,50 @@
+<div class="w-full h-full overflow-y-auto p-6 md:p-8">
+  <header>
+    <h1 class="text-2xl md:text-3xl font-semibold text-zinc-50">{{ title }}</h1>
+    <p class="mt-1.5 max-w-xl text-sm text-zinc-400">{{ subtitle }}</p>
+  </header>
+
+  <section class="mt-8 bg-surface rounded-xl border border-zinc-700/70 p-6 flex flex-wrap items-center gap-5">
+    @if (personalInfo.photoUrl) {
+      <img
+        [src]="personalInfo.photoUrl"
+        [alt]="personalInfo.name"
+        class="h-16 w-16 rounded-full object-cover border border-zinc-600"
+      />
+    } @else {
+      <div class="h-16 w-16 rounded-full bg-brand-primary/20 border border-brand-secondary/40 flex items-center justify-center text-xl font-semibold text-brand-secondary select-none">
+        {{ initials }}
+      </div>
+    }
+
+    <div>
+      <p class="text-lg font-semibold text-zinc-50">{{ personalInfo.name }}</p>
+      <p class="text-sm text-zinc-400">{{ personalInfo.email }}</p>
+      <span class="mt-1.5 inline-block rounded-full bg-brand-primary/10 border border-brand-secondary/40 px-2.5 py-0.5 text-xs font-medium capitalize text-brand-secondary">
+        {{ personalInfo.plan }} plan
+      </span>
+    </div>
+  </section>
+
+  <section class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="bg-surface rounded-xl border border-zinc-700/70 p-5">
+      <p class="text-xs uppercase tracking-wider text-zinc-400">Credits</p>
+      <p class="mt-2 text-3xl font-semibold text-zinc-50">{{ personalInfo.credits }}</p>
+    </div>
+
+    <div class="bg-surface rounded-xl border border-zinc-700/70 p-5">
+      <p class="text-xs uppercase tracking-wider text-zinc-400">Member since</p>
+      <p class="mt-2 text-2xl font-semibold text-zinc-50">{{ personalInfo.createdAt }}</p>
+    </div>
+
+    <div class="bg-surface rounded-xl border border-zinc-700/70 p-5">
+      <p class="text-xs uppercase tracking-wider text-zinc-400">Country</p>
+      <p class="mt-2 text-2xl font-semibold text-zinc-50">{{ personalInfo.country }}</p>
+    </div>
+
+    <div class="bg-surface rounded-xl border border-zinc-700/70 p-5">
+      <p class="text-xs uppercase tracking-wider text-zinc-400">User ID</p>
+      <p class="mt-2 break-all text-sm font-mono text-zinc-300">{{ personalInfo.id }}</p>
+    </div>
+  </section>
+</div>
