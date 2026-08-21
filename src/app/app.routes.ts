@@ -27,7 +27,17 @@ export const routes: Routes = [
         path: 'for-you',
         loadComponent: () => import('./core/aggregates/community/ui/pages/for-you-page/for-you-page.component')
           .then(f => f.ForYouPageComponent)
-      }
+      },
+      {
+        path: 'billing',
+        loadComponent: () => import('./core/payments/ui/pages/payments-page/payments-page.component')
+          .then(p=>p.PaymentsPageComponent)
+      },
+      {
+        path: 'account',
+        loadComponent: () => import('./core/account/ui/pages/account-info/account-info.component')
+          .then(a=>a.AccountInfoComponent)
+      },
     ]
   }
 ];
