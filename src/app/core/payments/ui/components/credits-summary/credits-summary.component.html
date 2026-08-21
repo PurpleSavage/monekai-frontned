@@ -1,0 +1,16 @@
+<section class="grid grid-cols-1 gap-4 sm:grid-cols-3 w-full">
+  <div class="bg-surface rounded-xl border border-zinc-700/70 p-5">
+    <p class="text-xs uppercase tracking-wider text-zinc-400">Current credits</p>
+    <p class="mt-2 text-3xl font-semibold text-zinc-50">{{ summary.currentCredits }}</p>
+  </div>
+
+  <div class="bg-surface rounded-xl border border-zinc-700/70 p-5">
+    <p class="text-xs uppercase tracking-wider text-zinc-400">Last payment</p>
+    <p class="mt-2 text-3xl font-semibold text-zinc-50">{{ summary.lastPaymentDate }}</p>
+  </div>
+
+  <div class="bg-surface rounded-xl border border-zinc-700/70 p-5">
+    <p class="text-xs uppercase tracking-wider text-zinc-400">Credits purchased this year</p>
+    <p class="mt-2 text-3xl font-semibold text-zinc-50">{{ summary.creditsPurchasedThisYear }}</p>
+  </div>
+</section>

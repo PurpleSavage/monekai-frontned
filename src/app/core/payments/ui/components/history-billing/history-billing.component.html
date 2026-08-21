@@ -1,0 +1,31 @@
+<section class="w-full">
+  <h2 class="text-lg font-semibold text-zinc-100">{{ title }}</h2>
+  <p class="mt-0.5 text-sm text-zinc-400">{{ subtitle }}</p>
+
+  <div class="mt-5 overflow-x-auto rounded-xl border border-zinc-700/70">
+    <table class="w-full text-left text-sm bg-surface">
+      <thead>
+        <tr class="border-b border-zinc-700/70 text-xs uppercase tracking-wider text-zinc-400">
+          <th class="px-4 py-3 font-medium">Date</th>
+          <th class="px-4 py-3 font-medium">Credits</th>
+          <th class="px-4 py-3 font-medium">Cost</th>
+          <th class="px-4 py-3 font-medium">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of history; track item.id) {
+          <tr class="border-b border-zinc-700/40 last:border-b-0 transition-colors hover:bg-zinc-700/20">
+            <td class="px-4 py-3 text-zinc-200">{{ item.date }}</td>
+            <td class="px-4 py-3 text-zinc-200">{{ item.credits }}</td>
+            <td class="px-4 py-3 text-zinc-200">${{ item.cost }} {{ item.currency }}</td>
+            <td class="px-4 py-3">
+              <span [class]="'font-medium capitalize ' + statusLabelClass(item.status)">
+                {{ item.status }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -1,6 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+@theme {
+  --color-pending-status: #eab308;
+  --color-rejected-status: #ef4444;
+  --color-accepted-status: #22c55e;
+
+  --color-surface: #27272a;
+
+  --color-brand-primary: #a855f7;
+  --color-brand-secondary: #c084fc;
+}
+
 @layer utilities {
   .bg-grid-gray {
     background-size: 24px 24px;
