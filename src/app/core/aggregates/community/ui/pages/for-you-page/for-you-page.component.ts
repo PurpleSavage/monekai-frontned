@@ -4,11 +4,14 @@ import { LatestRequestDTO } from "../../../application/dtos/requests/latest-requ
 import { ListLatestSharedSamplesUseCase } from "../../../application/use-cases/list-latest-shared-samples.use-case";
 import { LatestSamplesStateService } from "../../../state-manager/latest-samples-state.service";
 import { AppBaseError } from "../../../../../shared/common/infrastructure/http-errors/app-base.error";
+import { ListLatestSharedSamplesVersionComponent } from "../../components/list-latest-shared-samples-version/list-latest-shared-samples-version.component";
+import { ListLatestEditSharedSamplesComponent } from "../../components/list-latest-edit-shared-samples/list-latest-edit-shared-samples.component";
 
 @Component({
   selector: 'app-for-you-page',
   templateUrl: './for-you-page.component.html',
-  standalone:true
+  standalone: true,
+  imports:[ListLatestSharedSamplesVersionComponent, ListLatestEditSharedSamplesComponent]
 })
 export class ForYouPageComponent  implements OnInit{
   private listSamplesEditedUseCase = inject(ListLatestSharedEditSamplesUseCase)
