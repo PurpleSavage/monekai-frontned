@@ -1,5 +1,5 @@
 <div class=" h-80 flex flex-col gap-1 ">
-  <p class="text-white text-lg">Shared samples</p>
+  <a routerLink="/monekai/for-you/community-shared-samples" class="text-white text-lg">Shared samples</a>
   <div class="flex items-center flex-1">
     @for(sample of listSharedSamples(); track sample.id){
       <app-sample-card-shared [sample]="sample" />

@@ -26,7 +26,24 @@ export const routes: Routes = [
       {
         path: 'for-you',
         loadComponent: () => import('./core/aggregates/community/ui/pages/for-you-page/for-you-page.component')
-          .then(f => f.ForYouPageComponent)
+          .then(f => f.ForYouPageComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./core/aggregates/community/ui/pages/latest-shared-samples-page/latest-shared-samples-page.component')
+              .then(l => l.LatestSharedSamplesPageComponent)
+          },
+          {
+            path: 'community-shared-samples',
+            loadComponent: () => import('./core/aggregates/community/ui/pages/community-shared-samples/community-shared-samples.component')
+              .then(c => c.CommunitySharedSamplesComponent)
+          },
+          {
+            path: 'community-shared-edit-samples',
+            loadComponent: () => import('./core/aggregates/community/ui/pages/community-shared-edit-samples-page/community-shared-edit-samples-page.component')
+              .then(c => c.CommunitySharedEditSamplesPageComponent)
+          },
+        ]
       },
       {
         path: 'billing',
