@@ -1,7 +1,33 @@
-<div class="">
-  <p>{{ sample().sample.sampleName }}</p>
-  <p>{{ sample().sample.prompt }}</p>
-  <p>{{ sample().sharedBy.email }}</p>
-  <p>Likes: {{ sample().likes }}</p>
-  <p>Downloads: {{ sample().downloads }}</p>
+<div class="w-44 shrink-0 cursor-pointer group/card">
+  <!-- Cover con gradiente + badge -->
+  <div
+    class="relative w-full aspect-square rounded-lg overflow-hidden p-3 flex flex-col justify-between
+           bg-linear-to-br {{ bgClass() }}
+           group-hover/card:scale-[1.02] transition-transform"
+  >
+    <!-- Badge tipo "RADIO" -->
+    <div class="flex justify-between items-start">
+      <div class="bg-black/70 rounded-full w-6 h-6 flex items-center justify-center">
+        <span class="text-white text-xs">♪</span>
+      </div>
+      <span class="text-black/70 text-[10px] font-bold tracking-wider">SAMPLE</span>
+    </div>
+
+    <!-- Título grande abajo del cover, estilo Spotify -->
+    <p class="text-black text-lg font-extrabold leading-tight truncate">
+      {{ sample().sample.sampleName }}
+    </p>
+  </div>
+
+  <!-- Info debajo del cover -->
+  <div class="pt-2 flex flex-col gap-0.5">
+    <p class="text-zinc-400 text-xs line-clamp-2 leading-snug">
+      {{ sample().sample.prompt }}
+    </p>
+    <div class="flex items-center gap-2 text-zinc-500 text-[11px] pt-1">
+      <span>{{ sample().likes }} likes</span>
+      <span>·</span>
+      <span>{{ sample().downloads }} downloads</span>
+    </div>
+  </div>
 </div>

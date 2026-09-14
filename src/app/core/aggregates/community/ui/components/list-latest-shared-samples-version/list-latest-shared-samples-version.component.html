@@ -1,12 +1,47 @@
 <div class=" h-80 flex flex-col gap-1 ">
-  <a routerLink="/monekai/for-you/community-shared-samples" class="text-white text-lg">Shared samples</a>
-  <div class="flex items-center flex-1">
-    @for(sample of listSharedSamples(); track sample.id){
-      <app-sample-card-shared [sample]="sample" />
-    }@empty{
-      <div class="flex items-center justify-center w-full h-full">
-        <p class="text-white text-center w-full">The community hasn't shared anything yet.</p>
-      </div>
-    }
-  </div>
+  <a routerLink="/monekai/for-you/community-shared-samples" class="text-white text-lg hover:text-gray-400 cursor-pointer">Shared samples</a>
+  <!-- Slider -->
+   <div class="relative group">
+     <!-- Flecha izquierda -->
+      @if (canGoPrev()) {
+      <button
+        (click)="prev()"
+       class="absolute left-0 top-1/2 -translate-y-1/2 z-10
+              bg-zinc-900/90 hover:bg-zinc-800 hover:scale-105 text-white
+              rounded-full w-10 h-10 flex items-center justify-center shadow-lg
+              opacity-0 group-hover:opacity-100 transition-all"
+     >
+       ‹
+      </button>
+      }
+ 
+      <div class="overflow-hidden" #wrapper>
+       <div
+         class="flex items-stretch gap-5 transition-transform duration-300 ease-out"
+         [style.transform]="'translateX(-' + currentTranslate + 'px)'"
+         #track
+       >
+         @for(sample of listSharedSamples(); track sample.id){
+           <app-sample-card-shared [sample]="sample" class="shrink-0" />
+         }@empty{
+           <div class="flex items-center justify-center w-full h-40">
+             <p class="text-white text-center w-full">The community hasn't shared anything yet.</p>
+           </div>
+         }
+       </div>
+     </div>
+ 
+      <!-- Flecha derecha -->
+      @if (canGoNext()) {
+      <button
+        (click)="next()"
+       class="absolute right-0 top-1/2 -translate-y-1/2 z-10
+              bg-zinc-900/90 hover:bg-zinc-800 hover:scale-105 text-white
+              rounded-full w-10 h-10 flex items-center justify-center shadow-lg
+              opacity-0 group-hover:opacity-100 transition-all"
+     >
+        ›
+      </button>
+      }
+   </div>
 </div>

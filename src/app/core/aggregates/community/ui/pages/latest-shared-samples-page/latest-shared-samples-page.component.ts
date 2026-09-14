@@ -32,7 +32,7 @@ export class LatestSharedSamplesPageComponent implements OnInit {
     this.listSamplesEditedUseCase.execute(dto).subscribe({
       next: (response) => {
         const list = response.data;
-        this.latestSamplesStateService.setListSharedEditSamples(list);
+        //this.latestSamplesStateService.setListSharedEditSamples(list);
       },
       error: (error) => {
         if (error instanceof AppBaseError) {
@@ -46,7 +46,7 @@ export class LatestSharedSamplesPageComponent implements OnInit {
     this.listSahredSamplesUseCase.execute(dto).subscribe({
       next: (response) => {
         const list = response.data;
-        this.latestSamplesStateService.setListSharedSamples(list);
+        //this.latestSamplesStateService.setListSharedSamples(list);
       },
       error: (error) => {
         if (error instanceof AppBaseError) {

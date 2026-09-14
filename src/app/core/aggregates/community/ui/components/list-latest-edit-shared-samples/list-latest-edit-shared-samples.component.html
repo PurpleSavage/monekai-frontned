@@ -1,5 +1,5 @@
 <div class=" h-80 flex flex-col gap-1 ">
-  <a routerLink="/monekai/for-you/community-shared-edit-samples" class="text-white text-lg">Samples with effects</a>
+  <a routerLink="/monekai/for-you/community-shared-edit-samples" class="text-white text-lg hover:text-gray-400 cursor-pointer">Samples with effects</a>
   <div class="flex items-center flex-1">
     @for(sample of listSharedEditSamples(); track sample.id){
       <app-sample-card-shared-edit [sample]="sample" />
