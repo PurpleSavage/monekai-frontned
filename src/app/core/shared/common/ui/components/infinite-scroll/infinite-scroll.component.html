@@ -1,0 +1,23 @@
+<div #scrollContainer [class]="scrollContainerClass">
+  @for (item of data(); track trackByFn(item)) {
+    <ng-container
+      *ngTemplateOutlet="renderItem(); context: { $implicit: item }"
+    ></ng-container>
+  }
+
+  @if (isLoading()) {
+    <div [class]="styleData()?.loaderStyle ?? 'flex justify-center w-full'">
+      <app-loader></app-loader>
+    </div>
+  } @else if (data().length === 0) {
+    <div
+      [class]="styleData()?.textEmptyStyle ?? 'flex flex-col items-center justify-center h-48 px-4 text-center'"
+    >
+      <p class="text-sm font-medium text-zinc-400">
+        {{ emptyText() || 'There are no shared samples to view.' }}
+      </p>
+    </div>
+  }
+
+  <div #sentinel [class]="styleData()?.sentinelStyle ?? 'h-10 w-full'" aria-hidden="true"></div>
+</div>

@@ -22,7 +22,6 @@ import { SamplerPersistencePort } from './core/sampler/application/ports/sampler
 import { SamplerPersistenceService } from './core/sampler/infrastructure/persistence/sampler-persistence.service';
 import { SamplerHttpService } from './core/sampler/infrastructure/http/sampler-http.service';
 import { SamplerPort } from './core/sampler/application/ports/sampler.port';
-import { GenerateSampleUseCase } from './core/sampler/application/use-cases/generate-sample.use-case';
 import { AudioEditStateService } from './core/sampler/state-manager/audio-edit-state.service';
 import { SaveSampleUseCase } from './core/sampler/application/use-cases/save-sample.use-case';
 import { CommunityPort } from './core/aggregates/community/application/ports/community.port';
@@ -30,6 +29,8 @@ import { CommunityHttpService } from './core/aggregates/community/infrastructure
 import { ListLatestSharedSamplesUseCase } from './core/aggregates/community/application/use-cases/list-latest-shared-samples.use-case';
 import { ListLatestSharedEditSamplesUseCase } from './core/aggregates/community/application/use-cases/list-latest-shared-edit-samples.use-case';
 import { LatestSamplesStateService } from './core/aggregates/community/state-manager/latest-samples-state.service';
+import { ListCommunitySharedEditSamplesUseCase } from './core/aggregates/community/application/use-cases/list-community-shared-edit-samples.use-case';
+import { ListCommunitySharedSamplesUseCase } from './core/aggregates/community/application/use-cases/list-community-shared-samples.use-case';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -46,6 +47,8 @@ export const appConfig: ApplicationConfig = {
     AudioEditStateService,
     ListSamplesUseCase,
     SaveSampleUseCase,
+    ListCommunitySharedEditSamplesUseCase,
+    ListCommunitySharedSamplesUseCase,
     {provide: SamplerPersistencePort,useClass: SamplerPersistenceService},
     {provide: SamplerPort,useClass:SamplerHttpService},
     {provide: AuthPort, useClass: AuthHttp },
