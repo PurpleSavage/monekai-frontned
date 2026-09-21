@@ -1,0 +1,71 @@
+<section class="w-full">
+  <h2 class="text-lg font-semibold text-zinc-100">{{ title }}</h2>
+  <p class="mt-0.5 text-sm text-zinc-400">{{ subtitle }}</p>
+
+  @if (error()) {
+    <div
+      class="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-red-500/30 bg-red-500/10 p-4"
+    >
+      <p class="text-sm text-red-300">{{ error() }}</p>
+      <button
+        type="button"
+        (click)="retry()"
+        class="rounded-lg bg-brand-primary/20 border border-white/10 px-3 py-1.5 text-xs font-medium text-brand-secondary transition-colors hover:bg-brand-primary/30"
+      >
+        Retry
+      </button>
+    </div>
+  } @else {
+    <div class="mt-5 overflow-x-auto rounded-xl border border-zinc-700/70">
+      <table class="w-full text-left text-sm bg-surface">
+        <thead>
+          <tr class="border-b border-zinc-700/70 text-xs uppercase tracking-wider text-zinc-400">
+            <th class="px-4 py-3 font-medium">Date</th>
+            <th class="px-4 py-3 font-medium">Credits</th>
+            <th class="px-4 py-3 font-medium">Cost</th>
+            <th class="px-4 py-3 font-medium">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (isLoading()) {
+            @for (item of skeletons; track $index) {
+              <tr class="border-b border-zinc-700/40 last:border-b-0">
+                <td class="px-4 py-3">
+                  <div class="h-3.5 w-24 animate-pulse rounded bg-zinc-800"></div>
+                </td>
+                <td class="px-4 py-3">
+                  <div class="h-3.5 w-12 animate-pulse rounded bg-zinc-800"></div>
+                </td>
+                <td class="px-4 py-3">
+                  <div class="h-3.5 w-16 animate-pulse rounded bg-zinc-800"></div>
+                </td>
+                <td class="px-4 py-3">
+                  <div class="h-3.5 w-20 animate-pulse rounded bg-zinc-800"></div>
+                </td>
+              </tr>
+            }
+          } @else if (history().length === 0) {
+            <tr>
+              <td colspan="4" class="px-4 py-8 text-center text-sm text-zinc-500">
+                No payments yet.
+              </td>
+            </tr>
+          } @else {
+            @for (item of history(); track item.id) {
+              <tr class="border-b border-zinc-700/40 last:border-b-0 transition-colors hover:bg-zinc-700/20">
+                <td class="px-4 py-3 text-zinc-200">{{ item.date }}</td>
+                <td class="px-4 py-3 text-zinc-200">{{ item.credits }}</td>
+                <td class="px-4 py-3 text-zinc-200">${{ item.cost }} {{ item.currency }}</td>
+                <td class="px-4 py-3">
+                  <span [class]="'font-medium capitalize ' + statusLabelClass(item.status)">
+                    {{ item.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

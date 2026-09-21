@@ -1,10 +1,12 @@
 import { Component } from "@angular/core";
 import { PersonalInfoDTO } from "../../../application/dtos/responses/personal-info.dto";
+import { PaymentHistoryComponent } from "../../components/payment-history/payment-history.component";
 
 @Component({
   templateUrl: './account-info.component.html',
   selector: 'app-account-info',
   standalone: true,
+  imports: [PaymentHistoryComponent],
 })
 export class AccountInfoComponent {
   public readonly title = 'Account';

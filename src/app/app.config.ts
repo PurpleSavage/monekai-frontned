@@ -31,6 +31,9 @@ import { ListLatestSharedEditSamplesUseCase } from './core/aggregates/community/
 import { LatestSamplesStateService } from './core/aggregates/community/state-manager/latest-samples-state.service';
 import { ListCommunitySharedEditSamplesUseCase } from './core/aggregates/community/application/use-cases/list-community-shared-edit-samples.use-case';
 import { ListCommunitySharedSamplesUseCase } from './core/aggregates/community/application/use-cases/list-community-shared-samples.use-case';
+import { AccountPort } from './core/account/application/ports/account.port';
+import { AccountHttpService } from './core/account/infrastructure/http/account-http.service';
+import { ListPaymentHistoryUseCase } from './core/account/application/use-cases/list-payment-history.use-case';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -55,6 +58,8 @@ export const appConfig: ApplicationConfig = {
     {provide:MetadataPersistencePort,useClass:MetadataPersistenceService},
     {provide: CommunityPort, useClass: CommunityHttpService},
     ListLatestSharedSamplesUseCase,
-    ListLatestSharedEditSamplesUseCase
+    ListLatestSharedEditSamplesUseCase,
+    {provide: AccountPort, useClass: AccountHttpService},
+    ListPaymentHistoryUseCase
   ],
 };
