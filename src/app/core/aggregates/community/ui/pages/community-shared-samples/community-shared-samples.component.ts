@@ -30,11 +30,11 @@ export class CommunitySharedSamplesComponent implements OnInit {
 
   protected readonly styleData: InfiniteScrollStyleData = {
     containerStyle:
-      'h-full w-full overflow-y-auto grid grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-6 p-6 content-start',
+      'h-full w-full overflow-y-auto grid grid-cols-5 gap-5 p-6 content-start',
     textEmptyStyle:
-      'flex flex-col items-center justify-center h-full col-span-full px-4 text-center',
-    sentinelStyle: 'h-10 w-full col-span-full',
-    loaderStyle: 'flex justify-center w-full col-span-full py-2',
+      'flex flex-col items-center justify-center h-full col-span-5 px-4 text-center',
+    sentinelStyle: 'h-10 w-full col-span-5',
+    loaderStyle: 'flex justify-center w-full col-span-5 py-2',
   };
 
   ngOnInit(): void {
