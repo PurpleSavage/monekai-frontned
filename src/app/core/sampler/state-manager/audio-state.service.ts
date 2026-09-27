@@ -69,7 +69,7 @@ export class AudioStateService {
 
     this.audiosGenerated.update(prev => ({
       ...prev,
-      items: prev.data.filter(
+      data: prev.data.filter(
         audio => audio.id !== id
       )
     }));
@@ -82,7 +82,7 @@ export class AudioStateService {
   
       ...prev,
   
-      items: [audio, ...prev.data]
+      data: [audio, ...prev.data]
   
     }));
   

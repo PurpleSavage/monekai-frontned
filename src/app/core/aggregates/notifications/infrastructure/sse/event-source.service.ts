@@ -8,7 +8,7 @@ export class EventSourceService implements ListenerEventsPort {
   private eventSource: EventSource | null = null
 
   constructor() {
-    const url = `${environment.backendUrl}/audio/sse/stream`
+    const url = `${environment.backendUrl}/sse/stream`
     this.connect(url, {
         withCredentials: true,
       })

@@ -2,6 +2,7 @@ import { Component, computed, inject, OnDestroy, OnInit } from "@angular/core";
 import { ListenEventUseCase } from "../../../application/use-cases/listen-event.use-case";
 import { ListenerEventsPort } from "../../../application/ports/listener-events.port";
 import { EventSourceService } from "../../../infrastructure/sse/event-source.service";
+import { NotificationsResponseDTO } from "../../../application/dtos/responses/notifications-response.dto";
 import { AudioStateService } from "../../../../../sampler/state-manager/audio-state.service";
 import { SampleEntity } from "../../../../../sampler/domain/entities/sample.entity";
 
@@ -39,15 +40,13 @@ export class NotificationListenerWrapperComponent implements OnInit, OnDestroy {
    
      this.listenEventsUseCase.register({
        'sample_ready': (
-         audio: SampleEntity
+         notification: NotificationsResponseDTO<SampleEntity>
        ) => {
-         console.log('sample_ready', audio)
-         this.audioStateService.addAudio(audio)
+         console.log('sample_ready', notification.data)
+         this.audioStateService.addAudio(notification.data)
        },
        'sample_error': (
-         error: {
-           error:string
-         }
+         error: NotificationsResponseDTO<null>
        ) => {
    
          console.error(error)
